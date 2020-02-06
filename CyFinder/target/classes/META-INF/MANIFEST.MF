@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1580950331511
+Build-Jdk: 1.8.0_181
+Built-By: Emiya
+Bundle-Activator: edu.claflin.cyfinder.internal.CyFinderActivator
+Bundle-ClassPath: .,finder-3.0.jar
+Bundle-ManifestVersion: 2
+Bundle-Name: CySubgraph Finder
+Bundle-SymbolicName: edu.claflin.CyFinder
+Bundle-Version: 1.0
+Created-By: Apache Maven Bundle Plugin
+Embed-Dependency: *;scope=compile|runtime
+Embedded-Artifacts: finder-3.0.jar;g="edu.claflin";a="finder";v="3.0"
+Import-Package: javax.swing,org.cytoscape.application.swing;version="[3.
+ 1,4)",org.cytoscape.model;version="[3.1,4)",org.cytoscape.model.subnetw
+ ork;version="[3.1,4)",org.cytoscape.service.util;version="[3.2,4)",org.
+ cytoscape.task;version="[3.2,4)",org.cytoscape.work,org.osgi.framework;
+ version="[1.5,2)"
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
+Tool: Bnd-2.4.1.201501161923

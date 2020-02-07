@@ -352,6 +352,7 @@ public class ConfigDialog extends JDialog implements ActionListener,
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+    	boolean tried = false;
         if (e.getSource() == doneButton) {
             String errorTitle = "Configuration Error";
             if (conditionsList.getSelectedValuesList().isEmpty()) {
@@ -368,6 +369,26 @@ public class ConfigDialog extends JDialog implements ActionListener,
                         "You must select a means of saving results!", errorTitle,
                         JOptionPane.ERROR_MESSAGE);
             } 
+            
+            /*
+             * Added a verification window in the cases that edge preservation is not sellected, warrning the user that they could break the program
+             */
+            else if (!pCheckBox.isSelected() && !tried)
+            {
+            	int choice = JOptionPane.showConfirmDialog(this, "Not selecting the \"Preserve Edges\" option will result in incorect output or can cause instability in the program!\n\n "
+            			+ "Would you like to Preserve the Edges", "Warrning", JOptionPane.YES_NO_OPTION);
+            	
+            	if (choice == JOptionPane.YES_OPTION)
+            	{
+            		pCheckBox.setSelected(true);
+            		tried = true;
+            	}
+            	else if (choice == JOptionPane.NO_OPTION)
+            	{
+            		pCheckBox.setSelected(false);
+            		tried = true;
+            	}
+            }
             else {
                 ActionEvent newEvent = null;
                 try {

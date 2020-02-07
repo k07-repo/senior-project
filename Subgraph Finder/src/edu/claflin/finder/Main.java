@@ -193,7 +193,8 @@ public class Main {
             GraphWriter writer = new SimpleGraphIO();
             
             HashMap<String, Boolean> config = new HashMap<>();
-            config.put("PRESERVATIVE", false);
+            //FIXME - sets default to not preserve edges, can modify to either forcer true or set true as default
+            config.put("PRESERVATIVE", true);
             
             ArrayList<Condition> conditions = new ArrayList<>();
             Comparator<Edge> ordering = null;
@@ -389,6 +390,9 @@ public class Main {
     private static Algorithm parseAlgorithm(String algorithmCode, HashMap<String, Boolean> config, ArrayList<Condition> conditions, Comparator<Edge> comparator) {
         // MOVE THIS IN THE FUTURE.. This whole code is a mess to do it now..
         ArgumentsBundle bundle = new ArgumentsBundle();
+        
+        // checks for the "Edge Preservation" check box
+        // can try to 
         bundle.putBoolean(ArgumentsBundle.COMMON_ARGS.EDGE_PRESERVATION.toString(), config.get("PRESERVATIVE"));
         conditions.stream().forEach(cond -> bundle.addCondition(cond));
         bundle.putObject(ArgumentsBundle.COMMON_ARGS.EDGE_WEIGHT_COMPARATOR.toString(), comparator);

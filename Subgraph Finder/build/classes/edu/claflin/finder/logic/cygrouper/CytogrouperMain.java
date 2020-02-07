@@ -78,7 +78,7 @@ public class CytogrouperMain {
      * @param tree the graph, assumed to already have been assigned group names
      * @param k the number of partitions to create
      * 
-     * Written by Kyle Pulido
+     * Written by kpuli007
      */
     public void kPartite(Map tree, int k) {    	
     	//1-partite graph isn't a thing, and 2-partite is just binary partite which is the input to this method.

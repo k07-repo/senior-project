@@ -193,7 +193,8 @@ public class Main {
             GraphWriter writer = new SimpleGraphIO();
             
             HashMap<String, Boolean> config = new HashMap<>();
-            config.put("PRESERVATIVE", false);
+            //FIXME - sets default to not preserve edges, can modify to either forcer true or set true as default
+            config.put("PRESERVATIVE", true);
             
             ArrayList<Condition> conditions = new ArrayList<>();
             Comparator<Edge> ordering = null;

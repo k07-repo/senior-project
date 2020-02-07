@@ -138,9 +138,9 @@ public class ConfigDialog extends JDialog implements ActionListener,
     private JCheckBox aCheckBox = new JCheckBox("Ascending Order");
     
     /**
-     * GUI: Checkbox for enabling "preservative" searching.
+     * GUI: Checkbox for enabling "preservative" searching. Set default to true so that edge preservation box is checked by default.
      */
-    private JCheckBox pCheckBox = new JCheckBox("Edge Preservative");
+    private JCheckBox pCheckBox = new JCheckBox("Edge Preservative", true);
     
     /**
      * GUI: Checkbox for enabling in-place annotation.
@@ -340,6 +340,7 @@ public class ConfigDialog extends JDialog implements ActionListener,
         configBundle.setNewChild(nCheckBox.isSelected());
         configBundle.setSaveToFile(sCheckBox.isSelected());
         
+        
         if (configBundle.isSaveToFile())
             configBundle.setSaveDirectory(saveDirectory);
         
@@ -366,7 +367,8 @@ public class ConfigDialog extends JDialog implements ActionListener,
                 JOptionPane.showMessageDialog(this,
                         "You must select a means of saving results!", errorTitle,
                         JOptionPane.ERROR_MESSAGE);
-            } else {
+            } 
+            else {
                 ActionEvent newEvent = null;
                 try {
                     newEvent = new ActionEvent(getConfigurationBundle(), 0,
@@ -384,7 +386,9 @@ public class ConfigDialog extends JDialog implements ActionListener,
                     dispose();
                 }
             }
-        } else if (e.getSource() == sCheckBox && sCheckBox.isSelected()) {
+        } 
+        // FIXME - selecting the output location for when save to file is selected ; THIS CURRENTLY WORKS
+        else if (e.getSource() == sCheckBox && sCheckBox.isSelected()) {
             JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             int returnval = fileChooser.showOpenDialog(this);

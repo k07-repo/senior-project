@@ -27,16 +27,18 @@ public class CytogrouperMain {
       PARAM: CommunicationListener listener:
              a Communicator object (Singleton) which implements the CommunicationListener interface
      */
-    public  CytogrouperMain(List<Graph> subgraphs, CommunicationListener listener) {
+    public  CytogrouperMain(List<Graph> subgraphs, CommunicationListener listener, int partiteNumber) {
         this.listener = listener;
 
         for(int i = 0; i < subgraphs.size(); i++) {
             CygrouperAssembler assmble = new CygrouperAssembler(subgraphs.get(i).getEdgeList());
             tree = assmble.getTree();
             BFS(tree);
-            //TEST CODE TO AUTO ASSIGN THEM 5-PARTITE. NO GRAPH INPUT YET
-            kPartite(tree, 5);
-            //END TEST
+            
+            if(partiteNumber > 2) {
+            	kPartite(tree, partiteNumber);
+            }            
+            
             results.add(tree);
         }
         listener.setGroups(this.results);

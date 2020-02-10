@@ -138,9 +138,9 @@ public class ConfigDialog extends JDialog implements ActionListener,
     private JCheckBox aCheckBox = new JCheckBox("Ascending Order");
     
     /**
-     * GUI: Checkbox for enabling "preservative" searching. Set default to true so that edge preservation box is checked by default.
+     * GUI: Checkbox for enabling "preservative" searching.
      */
-    private JCheckBox pCheckBox = new JCheckBox("Edge Preservative", true);
+    private JCheckBox pCheckBox = new JCheckBox("Edge Preservative");
     
     /**
      * GUI: Checkbox for enabling in-place annotation.
@@ -160,6 +160,10 @@ public class ConfigDialog extends JDialog implements ActionListener,
      */
     private JButton doneButton = new JButton("Done");
     
+    /**
+     * JTextField for selecting a k-partite number
+     */
+    private JTextField partiteField = new JTextField();
     /**
      * The File object indicating the directory to save subgraphs in.
      */
@@ -254,11 +258,15 @@ public class ConfigDialog extends JDialog implements ActionListener,
         add(sCheckBox, getConstraints(0, 11, 4, 1, 1, 1, 
                 GridBagConstraints.BOTH, GridBagConstraints.CENTER, 
                 0, 0, insets));
+        add(new JLabel("k-partite number (optional, minimum 3)"), getConstraints(0, 12, 2, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.CENTER,0, 0, insets));
+        add(partiteField, getConstraints(2, 12, 2, 1, 1, 1,
+                GridBagConstraints.BOTH, GridBagConstraints.CENTER,
+                0, 0, insets));
         add(new JSeparator(JSeparator.HORIZONTAL), 
-                getConstraints(0, 12, 4, 1, 1, 0, 
+                getConstraints(0, 13, 4, 1, 1, 0, 
                         GridBagConstraints.BOTH, GridBagConstraints.CENTER,
                         0, 0, insets));
-        add(doneButton, getConstraints(2, 13, 2, 1, 1, 1,
+        add(doneButton, getConstraints(2, 14, 2, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.LINE_END, 
                 0, 0, insets));
         //testing();
@@ -334,12 +342,20 @@ public class ConfigDialog extends JDialog implements ActionListener,
             }
             algo = new Bundle(bundledAlgos.toArray(new Algorithm[0]));
         }
+        
+        int partiteNumber = 0;
+        try {
+        	partiteNumber = Integer.parseInt(partiteField.getText());
+        }
+        catch (Exception e) {
+        	//pass
+        }
+        algo.setPartiteNumber(partiteNumber);
         configBundle.setAlgo(algo);
         
         configBundle.setInPlace(iCheckBox.isSelected());
         configBundle.setNewChild(nCheckBox.isSelected());
         configBundle.setSaveToFile(sCheckBox.isSelected());
-        
         
         if (configBundle.isSaveToFile())
             configBundle.setSaveDirectory(saveDirectory);
@@ -347,12 +363,12 @@ public class ConfigDialog extends JDialog implements ActionListener,
         return configBundle;
     }
 
+    
     /**
      * {@inheritDoc }
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-    	boolean tried = false;
         if (e.getSource() == doneButton) {
             String errorTitle = "Configuration Error";
             if (conditionsList.getSelectedValuesList().isEmpty()) {
@@ -368,28 +384,7 @@ public class ConfigDialog extends JDialog implements ActionListener,
                 JOptionPane.showMessageDialog(this,
                         "You must select a means of saving results!", errorTitle,
                         JOptionPane.ERROR_MESSAGE);
-            } 
-            
-            /*
-             * Added a verification window in the cases that edge preservation is not sellected, warrning the user that they could break the program
-             */
-            else if (!pCheckBox.isSelected() && !tried)
-            {
-            	int choice = JOptionPane.showConfirmDialog(this, "Not selecting the \"Preserve Edges\" option will result in incorect output or can cause instability in the program!\n\n "
-            			+ "Would you like to Preserve the Edges", "Warrning", JOptionPane.YES_NO_OPTION);
-            	
-            	if (choice == JOptionPane.YES_OPTION)
-            	{
-            		pCheckBox.setSelected(true);
-            		tried = true;
-            	}
-            	else if (choice == JOptionPane.NO_OPTION)
-            	{
-            		pCheckBox.setSelected(false);
-            		tried = true;
-            	}
-            }
-            else {
+            } else {
                 ActionEvent newEvent = null;
                 try {
                     newEvent = new ActionEvent(getConfigurationBundle(), 0,
@@ -407,9 +402,7 @@ public class ConfigDialog extends JDialog implements ActionListener,
                     dispose();
                 }
             }
-        } 
-        // FIXME - selecting the output location for when save to file is selected ; THIS CURRENTLY WORKS
-        else if (e.getSource() == sCheckBox && sCheckBox.isSelected()) {
+        } else if (e.getSource() == sCheckBox && sCheckBox.isSelected()) {
             JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             int returnval = fileChooser.showOpenDialog(this);

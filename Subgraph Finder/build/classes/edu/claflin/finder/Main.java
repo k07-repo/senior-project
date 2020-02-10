@@ -390,6 +390,9 @@ public class Main {
     private static Algorithm parseAlgorithm(String algorithmCode, HashMap<String, Boolean> config, ArrayList<Condition> conditions, Comparator<Edge> comparator) {
         // MOVE THIS IN THE FUTURE.. This whole code is a mess to do it now..
         ArgumentsBundle bundle = new ArgumentsBundle();
+        
+        // checks for the "Edge Preservation" check box
+        // can try to 
         bundle.putBoolean(ArgumentsBundle.COMMON_ARGS.EDGE_PRESERVATION.toString(), config.get("PRESERVATIVE"));
         conditions.stream().forEach(cond -> bundle.addCondition(cond));
         bundle.putObject(ArgumentsBundle.COMMON_ARGS.EDGE_WEIGHT_COMPARATOR.toString(), comparator);

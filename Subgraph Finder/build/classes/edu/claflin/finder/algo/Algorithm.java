@@ -34,6 +34,12 @@ public abstract class Algorithm implements Processable<Graph, Graph> {
      * The current progress of the algorithm.
      */
     private double progress = 0D;
+    
+    /**
+     * Number passed in using partite number.
+     * Somewhat of a bandaid fix because haven't figured out the arguments bundle yet - kpuli
+     */
+    private int partiteNumber = 0;
     /**
      * Constant for indicating the progress property.
      */
@@ -68,6 +74,13 @@ public abstract class Algorithm implements Processable<Graph, Graph> {
         }
     }
     
+    public void setPartiteNumber(int partiteNumber) {
+    	this.partiteNumber = partiteNumber;
+    }
+    
+    public int getPartiteNumber() {
+    	return this.partiteNumber;
+    }
     /**
      * Removes duplicate subGraphs from the provided ArrayList.  This ensures 
      * that all found Graphs are unique.
@@ -133,7 +146,7 @@ public abstract class Algorithm implements Processable<Graph, Graph> {
                     (duplicate.length - subGraphs.size()) + " graphs.");
         }
         //Evyatar & Ariel. Takes the completed subgraphs and starts the logic of assigning a group to evey node in the subgraph (A or B) for each subgraph.
-        CytogrouperMain cytoGrouper = new CytogrouperMain(subGraphs,Communicator.getSingleton());
+        CytogrouperMain cytoGrouper = new CytogrouperMain(subGraphs,Communicator.getSingleton(), this.partiteNumber);
         /*Evyatar & Ariel. This listener (listener.gimmeUniqueSubGraphs(subGraphs)) is not used but may be useful to keep for the future,
         since it allows access to the the final subgraphs found in the Cyfinder module of the app.*/
         listener.setUniqueSubGraphs(subGraphs);

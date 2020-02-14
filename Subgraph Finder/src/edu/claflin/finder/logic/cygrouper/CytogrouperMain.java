@@ -35,9 +35,11 @@ public class CytogrouperMain {
             tree = assmble.getTree();
             BFS(tree);
             
+            //Currently disabled
+            /*
             if(partiteNumber > 2) {
             	kPartite(tree, partiteNumber);
-            }            
+            } */           
             
             results.add(tree);
         }
@@ -51,8 +53,8 @@ public class CytogrouperMain {
         CygrouperNode firstNode = (CygrouperNode)tree.get(tree.keySet().toArray()[0]);
         firstNode.setGroup("A");
         firstNode.isVisited = true;
+        firstNode.setPartiteNumber(0);
         q.add(firstNode);
-
 
         while(!q.isEmpty()){
             //char parentGroup = q.peek().getOppositeGroup();
@@ -63,6 +65,7 @@ public class CytogrouperMain {
                 CygrouperNode connection = connections.get(i);
                 if(connection.isVisited != true){
                     connection.setGroup(current.getOppositeGroup());
+                    connection.setPartiteNumber(current.getPartiteNumber() + 1);
                     q.add(connection);
                 }
             }
@@ -82,6 +85,7 @@ public class CytogrouperMain {
      * 
      * Written by kpuli007
      */
+    /*
     public void kPartite(Map tree, int k) {    	
     	//1-partite graph isn't a thing, and 2-partite is just binary partite which is the input to this method.
     	//So we disallow using them as parameters
@@ -176,4 +180,5 @@ public class CytogrouperMain {
             current.setPartiteNumber(2);
         }
     }
+    */
 }

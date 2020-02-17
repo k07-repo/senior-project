@@ -139,8 +139,14 @@ public class ConfigDialog extends JDialog implements ActionListener,
     
     /**
      * GUI: Checkbox for enabling "preservative" searching.
+     * 
+     * rapin001 on 2/10/20
+     * Set the default value as true, so it's checked
+     * 
+     *  tried parameter - if the user has made a choice already in case the 
      */
-    private JCheckBox pCheckBox = new JCheckBox("Edge Preservative");
+    private JCheckBox pCheckBox = new JCheckBox("Edge Preservative", true);
+    private boolean tried = false;
     
     /**
      * GUI: Checkbox for enabling in-place annotation.
@@ -258,10 +264,11 @@ public class ConfigDialog extends JDialog implements ActionListener,
         add(sCheckBox, getConstraints(0, 11, 4, 1, 1, 1, 
                 GridBagConstraints.BOTH, GridBagConstraints.CENTER, 
                 0, 0, insets));
-        add(new JLabel("k-partite number (optional, minimum 3)"), getConstraints(0, 12, 2, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.CENTER,0, 0, insets));
+        add(new JLabel(" k-partite number (optional, minimum 3)"), getConstraints(0, 12, 2, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.CENTER,0, 0, insets));
         add(partiteField, getConstraints(2, 12, 2, 1, 1, 1,
                 GridBagConstraints.BOTH, GridBagConstraints.CENTER,
                 0, 0, insets));
+        add(new JLabel(" The number cannot exceed the number of verticies in the subgraph"), getConstraints(0, 13, 2, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.CENTER,0, 0, insets));
         add(new JSeparator(JSeparator.HORIZONTAL), 
                 getConstraints(0, 13, 4, 1, 1, 0, 
                         GridBagConstraints.BOTH, GridBagConstraints.CENTER,
@@ -369,6 +376,7 @@ public class ConfigDialog extends JDialog implements ActionListener,
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+    	
         if (e.getSource() == doneButton) {
             String errorTitle = "Configuration Error";
             if (conditionsList.getSelectedValuesList().isEmpty()) {
@@ -384,7 +392,28 @@ public class ConfigDialog extends JDialog implements ActionListener,
                 JOptionPane.showMessageDialog(this,
                         "You must select a means of saving results!", errorTitle,
                         JOptionPane.ERROR_MESSAGE);
-            } else {
+            } 
+            
+            /*
+             * Added a verification window in the cases that edge preservation is not sellected, warrning the user that they could break the program
+             */
+            else if (!pCheckBox.isSelected() && !tried)
+            {
+            	int choice = JOptionPane.showConfirmDialog(this, "Not selecting the \"Preserve Edges\" option will result in incorect output or can cause instability in the program!\n\n "
+            			+ "Would you like to Preserve the Edges", "Warrning", JOptionPane.YES_NO_OPTION);
+            	
+            	if (choice == JOptionPane.YES_OPTION)
+            	{
+            		pCheckBox.setSelected(true);
+            		tried = true;
+            	}
+            	else if (choice == JOptionPane.NO_OPTION)
+            	{
+            		pCheckBox.setSelected(false);
+            		tried = true;
+            	}
+            }
+            else {
                 ActionEvent newEvent = null;
                 try {
                     newEvent = new ActionEvent(getConfigurationBundle(), 0,
@@ -402,7 +431,9 @@ public class ConfigDialog extends JDialog implements ActionListener,
                     dispose();
                 }
             }
-        } else if (e.getSource() == sCheckBox && sCheckBox.isSelected()) {
+        } 
+        // FIXME - selecting the output location for when save to file is selected ; THIS CURRENTLY WORKS
+        else if (e.getSource() == sCheckBox && sCheckBox.isSelected()) {
             JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             int returnval = fileChooser.showOpenDialog(this);

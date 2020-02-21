@@ -175,6 +175,39 @@ public class ConfigDialog extends JDialog implements ActionListener,
      */
     private File saveDirectory = null;
     
+    
+    /**
+     *  rapin001 @ 2/19/20
+     *  For testing which condition and which algorith is used
+     */
+    private final int startCharCond = 36;
+    
+    /**
+     * String for Bipartite Condition
+     */
+    private final String biPartiteCon= "BipartiteCondition";
+   
+    /**
+     * String for Clique Condition
+     */
+    private final String cliqueCon = "CliqueCondition";
+   
+    /**
+     * String for directed clique condtion
+     */
+    private final String dirCliqueCon = "DirectedCliqueCondition";
+    
+    /**
+     *  String variable for comparing strings to know which algorithm is used
+     */
+    
+    @SuppressWarnings("unused")
+	private final String BFTSSting = "BreadthFirstTraversalSearch]";
+   
+    /**
+     * Variables to hold which algorithm is chosen
+     */
+    private final int startCharAlgo = 31;
     /**
      * Constructor for initializing the Panel.
      */
@@ -268,8 +301,8 @@ public class ConfigDialog extends JDialog implements ActionListener,
         add(partiteField, getConstraints(2, 12, 2, 1, 1, 1,
                 GridBagConstraints.BOTH, GridBagConstraints.CENTER,
                 0, 0, insets));
-        add(new JLabel(" The number cannot exceed the number of verticies in the subgraph"), getConstraints(0, 13, 2, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.CENTER,0, 0, insets));
-        add(new JSeparator(JSeparator.HORIZONTAL), 
+        add(new JLabel(" !!!Currently disabled!!!"), getConstraints(0, 13, 2, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.CENTER,0, 0, insets));
+       add(new JSeparator(JSeparator.HORIZONTAL), 
                 getConstraints(0, 13, 4, 1, 1, 0, 
                         GridBagConstraints.BOTH, GridBagConstraints.CENTER,
                         0, 0, insets));
@@ -339,7 +372,9 @@ public class ConfigDialog extends JDialog implements ActionListener,
         if (selectedAlgorithms.size() == 1) {
             Class algoClass = (Class) selectedAlgorithms.get(0);
             Constructor constructor = algoClass.getConstructor(ArgumentsBundle.class);
-            algo = (Algorithm) constructor.newInstance(argsBundle);            
+            algo = (Algorithm) constructor.newInstance(argsBundle);    
+            
+            //FIXME - add check for algorithm selected
         } else {
             ArrayList<Algorithm> bundledAlgos = new ArrayList<>();
             for (Object obj : selectedAlgorithms) {
@@ -395,24 +430,34 @@ public class ConfigDialog extends JDialog implements ActionListener,
             } 
             
             /*
-             * Added a verification window in the cases that edge preservation is not sellected, warrning the user that they could break the program
+             * rapin001 @ 2/20
+             * Added a warning in case clique and no edge preservation is used with an undirected graph created using the addative method while the issue is addressed 
              */
-            else if (!pCheckBox.isSelected() && !tried)
+            else if (conditionsList.getSelectedValue().toString().substring(startCharCond).equals(cliqueCon)  && !pCheckBox.isSelected() && !tried)
             {
-            	int choice = JOptionPane.showConfirmDialog(this, "Not selecting the \"Preserve Edges\" option will result in incorect output or can cause instability in the program!\n\n "
-            			+ "Would you like to Preserve the Edges", "Warrning", JOptionPane.YES_NO_OPTION);
-            	
-            	if (choice == JOptionPane.YES_OPTION)
-            	{
-            		pCheckBox.setSelected(true);
-            		tried = true;
-            	}
-            	else if (choice == JOptionPane.NO_OPTION)
-            	{
-            		pCheckBox.setSelected(false);
-            		tried = true;
-            	}
+            	tried = true;
+            	JOptionPane.showMessageDialog(this, "Currently the option:\n\n\t Clique + Breath First or Depth First Traversal Searches + No Edge preservation\n"
+            			+ "When the graphed worked on is made undirecte using the: Additive method\n\n is not supported!\n\n"
+            			+ "Please change your search criteria or press \"Done\" again to run", "Warrning", JOptionPane.ERROR_MESSAGE);
+     
             }
+            /*
+             * rapin001 @ 2/20
+             * Added a error message when user tries to select: Currently the option: Bipartite + Breath First Traversal Search + No Edge Presertvation while the issue is resolved
+             */
+        	else if (conditionsList.getSelectedValue().toString().substring(startCharCond).equals(biPartiteCon) && algorithmsList.getSelectedValuesList().toString().substring(startCharAlgo).equals(BFTSSting) && !pCheckBox.isSelected())
+        	{
+        		 JOptionPane.showMessageDialog(this, "Currently the option:\n\n\t Bipartite + Breath First Traversal Search + No Edge Presertvation \n\n is not supported!", errorTitle, JOptionPane.ERROR_MESSAGE);
+        	}
+            
+            /*
+             * rapin001@ 2/20
+             * Added a error message when user selects save to file while issue with feature is being worked on 
+             */
+        	else if (sCheckBox.isSelected())
+        	{
+        		 JOptionPane.showMessageDialog(this, "Currently the option:\n\n\t Save found subgraph to file is not working \n\n is not supported!", errorTitle, JOptionPane.ERROR_MESSAGE);
+        	}
             else {
                 ActionEvent newEvent = null;
                 try {

@@ -149,6 +149,11 @@ public class ConfigDialog extends JDialog implements ActionListener,
     private boolean tried = false;
     
     /**
+     * GUI: JComboBox for selecting a sort method for the graph outputs by size
+     */
+    private JComboBox sortGraphSelection;
+    
+    /**
      * GUI: Checkbox for enabling in-place annotation.
      */
     private JCheckBox iCheckBox = new JCheckBox("In-Place annotation of source graph.");
@@ -212,6 +217,11 @@ public class ConfigDialog extends JDialog implements ActionListener,
         
         doneButton.addActionListener(this);
         
+        sortGraphSelection = new JComboBox();
+        sortGraphSelection.addItem(new ComboItem("None", 0));
+        sortGraphSelection.addItem(new ComboItem("Ascending", 1));
+        sortGraphSelection.addItem(new ComboItem("Descending", 2));
+        
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setResizable(true);
         init();
@@ -255,26 +265,28 @@ public class ConfigDialog extends JDialog implements ActionListener,
                 getConstraints(0, 8, 4, 1, 1, 0, 
                         GridBagConstraints.BOTH, GridBagConstraints.CENTER, 
                         0, 0, insets));
-        add(iCheckBox, getConstraints(0, 9, 4, 1, 1, 1, 
+        add(sortGraphSelection, getConstraints(0, 9, 1, 1, 1, 1,
+                GridBagConstraints.NONE, GridBagConstraints.CENTER,
+                0, 0, insets));
+        add(iCheckBox, getConstraints(0, 10, 4, 1, 1, 1,
                 GridBagConstraints.BOTH, GridBagConstraints.CENTER,
                 0, 0, insets));
-        add(nCheckBox, getConstraints(0, 10, 4, 1, 1, 1, 
+        add(nCheckBox, getConstraints(0, 11, 4, 1, 1, 1,
                 GridBagConstraints.BOTH, GridBagConstraints.CENTER,
                 0, 0, insets));
-        add(sCheckBox, getConstraints(0, 11, 4, 1, 1, 1, 
-                GridBagConstraints.BOTH, GridBagConstraints.CENTER, 
-                0, 0, insets));
-        add(new JLabel(" k-partite number (optional, minimum 3)"), getConstraints(0, 12, 2, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.CENTER,0, 0, insets));
-        add(partiteField, getConstraints(2, 12, 2, 1, 1, 1,
+        add(sCheckBox, getConstraints(0, 12, 4, 1, 1, 1,
                 GridBagConstraints.BOTH, GridBagConstraints.CENTER,
                 0, 0, insets));
-        add(new JLabel(" The number cannot exceed the number of verticies in the subgraph"), getConstraints(0, 13, 2, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.CENTER,0, 0, insets));
-        add(new JSeparator(JSeparator.HORIZONTAL), 
-                getConstraints(0, 13, 4, 1, 1, 0, 
+        add(new JLabel("k-partite number (optional, minimum 3)"), getConstraints(0, 13, 2, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.CENTER,0, 0, insets));
+        add(partiteField, getConstraints(2, 13, 2, 1, 1, 1,
+                GridBagConstraints.BOTH, GridBagConstraints.CENTER,
+                0, 0, insets));
+        add(new JSeparator(JSeparator.HORIZONTAL),
+                getConstraints(0, 14, 4, 1, 1, 0,
                         GridBagConstraints.BOTH, GridBagConstraints.CENTER,
                         0, 0, insets));
-        add(doneButton, getConstraints(2, 14, 2, 1, 1, 1,
-                GridBagConstraints.NONE, GridBagConstraints.LINE_END, 
+        add(doneButton, getConstraints(2, 15, 2, 1, 1, 1,
+                GridBagConstraints.NONE, GridBagConstraints.LINE_END,
                 0, 0, insets));
         //testing();
         pack();
@@ -540,6 +552,34 @@ public class ConfigDialog extends JDialog implements ActionListener,
             listLabel.setText(spaced);
             
             return listLabel;
+        }
+    }
+    
+    class ComboItem
+    {
+        private String key;
+        private int value;
+
+        public ComboItem(String key, int value)
+        {
+            this.key = key;
+            this.value = value;
+        }
+
+        @Override
+        public String toString()
+        {
+            return key;
+        }
+
+        public String getKey()
+        {
+            return key;
+        }
+
+        public int getValue()
+        {
+            return value;
         }
     }
 }

@@ -37,6 +37,7 @@ import edu.claflin.finder.logic.Node;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
 import javax.swing.*;
 
@@ -173,19 +174,21 @@ public class SubgraphFinderTask extends AbstractNetworkTask
         Algorithm algo = config.getAlgo();
         algo.addPropertyChangeListener(this);
         ArrayList<Graph> graphs = algo.process(target);
-        
+        Collections.sort(graphs, new GraphSizeComparator());        
         return graphs;
     }
+    
     private void saveSubGraphs(final TaskMonitor taskMonitor, ArrayList<Graph> subgraphs) {
+    	
         taskMonitor.setStatusMessage("Saving subgraphs...");
         taskMonitor.setProgress(0D);
-        
         int operationCount = 0;
         if (config.isInPlace()) operationCount++;
         if (config.isNewChild()) operationCount++;
         if (config.isSaveToFile()) operationCount++;
         int completedOperations = 0;
         
+         
         // Add inplace annotations.
         if (config.isInPlace()) {
             int count = 0;
@@ -217,6 +220,8 @@ public class SubgraphFinderTask extends AbstractNetworkTask
             CyRootNetworkManager rootManager = getRootNetworkService();
             CyRootNetwork root = rootManager.getRootNetwork(network);
             int count = 0;
+            
+            
             for (Graph graph : subgraphs) {
                 String name;
                 do {
@@ -235,9 +240,12 @@ public class SubgraphFinderTask extends AbstractNetworkTask
                     CyNodeAdapter anode = (CyNodeAdapter) node;
                     sub.addNode(anode.getCyNode());
                     CyRow row =sub.getDefaultNodeTable().getRow(anode.getCyNode().getSUID());
-                    CygrouperNode grp = m.get(row.get("name",String.class));
+                    CygrouperNode grp = m.get(row.get("name",String.class));                    
+                   
                     row.set("group",grp.group);
                     row.set("partition number", grp.kPartiteGroupNumber + "");
+                    
+                    
                 });
                 graph.getEdgeList().stream().forEach(edge -> {
                     CyEdgeAdapter aedge = (CyEdgeAdapter) edge;

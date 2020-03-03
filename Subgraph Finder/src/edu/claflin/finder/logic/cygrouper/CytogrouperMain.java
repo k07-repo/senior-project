@@ -27,9 +27,9 @@ public class CytogrouperMain {
       PARAM: CommunicationListener listener:
              a Communicator object (Singleton) which implements the CommunicationListener interface
      */
-    public  CytogrouperMain(List<Graph> subgraphs, CommunicationListener listener, int partiteNumber) {
+    public CytogrouperMain(List<Graph> subgraphs, CommunicationListener listener, int partiteNumber) {
         this.listener = listener;
-
+        Collections.sort(subgraphs, new GraphSizeComparator());
         for(int i = 0; i < subgraphs.size(); i++) {
             CygrouperAssembler assmble = new CygrouperAssembler(subgraphs.get(i).getEdgeList());
             tree = assmble.getTree();

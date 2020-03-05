@@ -456,7 +456,7 @@ public class ConfigDialog extends JDialog implements ActionListener,
              */
         	else if (sCheckBox.isSelected())
         	{
-        		 JOptionPane.showMessageDialog(this, "Currently the option:\n\n\t Save found subgraph to file is not working \n\n is not supported!", errorTitle, JOptionPane.ERROR_MESSAGE);
+        		 JOptionPane.showMessageDialog(this, "Currently the option:\n\n\t Save found subgraph to file  \n\n is not supported!", errorTitle, JOptionPane.ERROR_MESSAGE);
         	}
             else {
                 ActionEvent newEvent = null;

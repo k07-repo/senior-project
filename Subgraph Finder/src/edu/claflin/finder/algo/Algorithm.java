@@ -4,21 +4,29 @@ import static edu.claflin.finder.Global.getLogger;
 
 import edu.claflin.finder.logic.cygrouper.Communicator;
 import edu.claflin.finder.logic.cygrouper.CommunicationListener;
+import edu.claflin.finder.algo.Algorithm.GraphSortOrder;
 import edu.claflin.finder.log.LogLevel;
 import edu.claflin.finder.logic.cygrouper.CytogrouperMain;
+import edu.claflin.finder.logic.cygrouper.GraphSizeComparator;
 import edu.claflin.finder.logic.Graph;
 import edu.claflin.finder.logic.processor.Processable;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Abstraction of the algorithm classes used for finding subgraphs.
  * 
  * @author Charles Allen Schultz II
- * @version 3.3 February 2. 2015
+ * @version 3.4 February 2. 2015
  */
 public abstract class Algorithm implements Processable<Graph, Graph> {
+	
+	public enum GraphSortOrder {
+		NONE, ASCENDING, DESCENDING;
+	}
+	
     CommunicationListener listener;
     int counter = 1;
     /**
@@ -44,6 +52,8 @@ public abstract class Algorithm implements Processable<Graph, Graph> {
      * Constant for indicating the progress property.
      */
     public static final String PROP_PROGRESS = "progress";
+    
+    private GraphSortOrder sortOrder = GraphSortOrder.NONE;
     
     /**
      * Public Constructor for creating an Algorithm.
@@ -72,6 +82,14 @@ public abstract class Algorithm implements Processable<Graph, Graph> {
             getLogger().logInfo(LogLevel.DEBUG,
                     "Algorithm object instantiated.");
         }
+    }
+    
+    public void setGraphSortOrder(GraphSortOrder gso) {
+    	this.sortOrder = gso;
+    }
+    
+    public GraphSortOrder getGraphSortOrder() {
+    	return this.sortOrder;
     }
     
     public void setPartiteNumber(int partiteNumber) {
@@ -144,6 +162,22 @@ public abstract class Algorithm implements Processable<Graph, Graph> {
         if (getLogger() != null) {
             getLogger().logInfo(LogLevel.NORMAL, "CULL: Culled " +
                     (duplicate.length - subGraphs.size()) + " graphs.");
+        }
+        
+        //sorting
+        GraphSortOrder gso = this.getGraphSortOrder();
+        
+        if(gso == GraphSortOrder.NONE) {
+        	// do nothing
+        }
+        else {        	
+        	if(gso == GraphSortOrder.ASCENDING) {
+        		Collections.sort(subGraphs, new GraphSizeComparator());
+        	}
+        	else if(gso == GraphSortOrder.DESCENDING) {
+        		Collections.sort(subGraphs, new GraphSizeComparator());
+        		Collections.reverse(subGraphs);
+        	}
         }
         //Evyatar & Ariel. Takes the completed subgraphs and starts the logic of assigning a group to evey node in the subgraph (A or B) for each subgraph.
         CytogrouperMain cytoGrouper = new CytogrouperMain(subGraphs,Communicator.getSingleton(), this.partiteNumber);

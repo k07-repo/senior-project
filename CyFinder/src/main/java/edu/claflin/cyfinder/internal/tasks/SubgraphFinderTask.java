@@ -174,7 +174,6 @@ public class SubgraphFinderTask extends AbstractNetworkTask
         Algorithm algo = config.getAlgo();
         algo.addPropertyChangeListener(this);
         ArrayList<Graph> graphs = algo.process(target);
-        Collections.sort(graphs, new GraphSizeComparator());        
         return graphs;
     }
     
@@ -188,7 +187,6 @@ public class SubgraphFinderTask extends AbstractNetworkTask
         if (config.isSaveToFile()) operationCount++;
         int completedOperations = 0;
         
-         
         // Add inplace annotations.
         if (config.isInPlace()) {
             int count = 0;

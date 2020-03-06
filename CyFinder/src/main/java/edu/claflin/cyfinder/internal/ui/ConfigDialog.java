@@ -25,6 +25,7 @@ import edu.claflin.cyfinder.internal.logic.ConfigurationBundle;
 import static edu.claflin.cyfinder.internal.ui.GridBagBuilder.getConstraints;
 
 import edu.claflin.finder.algo.Algorithm;
+import edu.claflin.finder.algo.Algorithm.GraphSortOrder;
 import edu.claflin.finder.algo.ArgumentsBundle;
 import edu.claflin.finder.algo.BreadthFirstTraversalSearch;
 import edu.claflin.finder.algo.Bundle;
@@ -324,7 +325,6 @@ public class ConfigDialog extends JDialog implements ActionListener,
         ConfigurationBundle configBundle = new ConfigurationBundle();
         ArgumentsBundle argsBundle = new ArgumentsBundle();
         
-        
         // Add Conditions
         List selectedConditions = conditionsList.getSelectedValuesList();
         for (Object obj : selectedConditions) {
@@ -367,9 +367,27 @@ public class ConfigDialog extends JDialog implements ActionListener,
         	partiteNumber = Integer.parseInt(partiteField.getText());
         }
         catch (Exception e) {
-        	//pass
-        }
+        	//do nothing
+        }       
         algo.setPartiteNumber(partiteNumber);
+        
+        int orderIndex = sortGraphSelection.getSelectedIndex();
+        if(orderIndex == 0) {
+        	//NONE
+        	algo.setGraphSortOrder(GraphSortOrder.NONE);
+        } else if(orderIndex == 1) {
+        	//ASCENDING
+        	algo.setGraphSortOrder(GraphSortOrder.ASCENDING);
+        } else if(orderIndex == 2) {
+        	//DESCENDING
+        	algo.setGraphSortOrder(GraphSortOrder.DESCENDING);
+        } else {
+        	throw new IllegalArgumentException("Order index wasn't valid for some reason.");
+        }
+        
+              
+        
+        
         configBundle.setAlgo(algo);
         
         configBundle.setInPlace(iCheckBox.isSelected());

@@ -1,5 +1,7 @@
 package edu.claflin.finder.logic.cygrouper;
 
+import edu.claflin.finder.algo.Algorithm;
+import edu.claflin.finder.algo.Algorithm.GraphSortOrder;
 import edu.claflin.finder.logic.Graph;
 import java.util.*;
 /*
@@ -28,8 +30,8 @@ public class CytogrouperMain {
              a Communicator object (Singleton) which implements the CommunicationListener interface
      */
     public CytogrouperMain(List<Graph> subgraphs, CommunicationListener listener, int partiteNumber) {
-        this.listener = listener;
-        Collections.sort(subgraphs, new GraphSizeComparator());
+        this.listener = listener;       
+                
         for(int i = 0; i < subgraphs.size(); i++) {
             CygrouperAssembler assmble = new CygrouperAssembler(subgraphs.get(i).getEdgeList());
             tree = assmble.getTree();

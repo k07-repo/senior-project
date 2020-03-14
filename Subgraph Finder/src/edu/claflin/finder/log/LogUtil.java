@@ -18,6 +18,11 @@ import java.util.HashMap;
  */
 public class LogUtil {
     
+	/**
+	 * TEST
+	 */
+	public static String path;
+	
     /**
      * The BufferedWriter used to log to a file.
      */

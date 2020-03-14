@@ -31,6 +31,8 @@ import edu.claflin.cyfinder.internal.ui.ErrorPanel;
 import edu.claflin.finder.algo.Algorithm;
 import edu.claflin.finder.io.graph.SimpleGraphIO;
 import edu.claflin.finder.io.graph.sub.GraphWriter;
+import edu.claflin.finder.log.LogLevel;
+import edu.claflin.finder.log.LogUtil;
 import edu.claflin.finder.logic.Edge;
 import edu.claflin.finder.logic.Graph;
 import edu.claflin.finder.logic.Node;
@@ -179,7 +181,9 @@ public class SubgraphFinderTask extends AbstractNetworkTask
     
     private void saveSubGraphs(final TaskMonitor taskMonitor, ArrayList<Graph> subgraphs) {
     	
+    	
         taskMonitor.setStatusMessage("Saving subgraphs...");
+        taskMonitor.setStatusMessage(LogUtil.path);
         taskMonitor.setProgress(0D);
         int operationCount = 0;
         if (config.isInPlace()) operationCount++;

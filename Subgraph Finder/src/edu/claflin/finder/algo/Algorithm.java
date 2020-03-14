@@ -7,6 +7,7 @@ import edu.claflin.finder.logic.cygrouper.CommunicationListener;
 import edu.claflin.finder.algo.Algorithm.GraphSortOrder;
 import edu.claflin.finder.log.LogLevel;
 import edu.claflin.finder.logic.cygrouper.CytogrouperMain;
+import edu.claflin.finder.logic.cygrouper.GraphAverageWeightComparator;
 import edu.claflin.finder.logic.cygrouper.GraphSizeComparator;
 import edu.claflin.finder.logic.Graph;
 import edu.claflin.finder.logic.processor.Processable;
@@ -24,7 +25,7 @@ import java.util.Collections;
 public abstract class Algorithm implements Processable<Graph, Graph> {
 	
 	public enum GraphSortOrder {
-		NONE, ASCENDING, DESCENDING;
+		NONE, ASCENDING, DESCENDING, AVERAGE_WEIGHT;
 	}
 	
     CommunicationListener listener;
@@ -170,6 +171,9 @@ public abstract class Algorithm implements Processable<Graph, Graph> {
         if(gso == GraphSortOrder.NONE) {
         	// do nothing
         }
+        else if(gso == GraphSortOrder.AVERAGE_WEIGHT) {
+        	Collections.sort(subGraphs, new GraphAverageWeightComparator());
+        }
         else {        	
         	if(gso == GraphSortOrder.ASCENDING) {
         		Collections.sort(subGraphs, new GraphSizeComparator());
@@ -179,6 +183,7 @@ public abstract class Algorithm implements Processable<Graph, Graph> {
         		Collections.reverse(subGraphs);
         	}
         }
+        
         //Evyatar & Ariel. Takes the completed subgraphs and starts the logic of assigning a group to evey node in the subgraph (A or B) for each subgraph.
         CytogrouperMain cytoGrouper = new CytogrouperMain(subGraphs,Communicator.getSingleton(), this.partiteNumber);
         /*Evyatar & Ariel. This listener (listener.gimmeUniqueSubGraphs(subGraphs)) is not used but may be useful to keep for the future,

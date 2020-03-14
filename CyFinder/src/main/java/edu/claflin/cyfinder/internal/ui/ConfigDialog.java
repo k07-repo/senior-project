@@ -222,6 +222,7 @@ public class ConfigDialog extends JDialog implements ActionListener,
         sortGraphSelection.addItem(new ComboItem("None", 0));
         sortGraphSelection.addItem(new ComboItem("Ascending", 1));
         sortGraphSelection.addItem(new ComboItem("Descending", 2));
+        sortGraphSelection.addItem(new ComboItem("Average Weight", 3));
         
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setResizable(true);
@@ -381,13 +382,12 @@ public class ConfigDialog extends JDialog implements ActionListener,
         } else if(orderIndex == 2) {
         	//DESCENDING
         	algo.setGraphSortOrder(GraphSortOrder.DESCENDING);
+        } else if(orderIndex == 3) {
+        	algo.setGraphSortOrder(GraphSortOrder.AVERAGE_WEIGHT);
         } else {
         	throw new IllegalArgumentException("Order index wasn't valid for some reason.");
-        }
-        
-              
-        
-        
+        }             
+          
         configBundle.setAlgo(algo);
         
         configBundle.setInPlace(iCheckBox.isSelected());

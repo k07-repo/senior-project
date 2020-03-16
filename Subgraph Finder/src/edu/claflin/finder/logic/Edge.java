@@ -34,7 +34,7 @@ public class Edge<D> {
      * Initializes the Edge object.
      *
      * @param source the Node representing the interaction source.
-     * @param destination t111111111111111he Node representing the interaction destination.
+     * @param destination the Node representing the interaction destination.
      * @param data the Object representing the Edge data.
      * @param undirected the boolean indicating if this edge is undirected.
      */

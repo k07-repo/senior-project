@@ -15,6 +15,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+
 /**
  * A class for reading and writing graphs.
  * 
@@ -103,9 +105,10 @@ public final class SimpleGraphIO implements GraphReader, GraphWriter {
      * edge are delimited by a tab.
      * 
      * @param toWrite the {@link Graph} object to write to a file.
+     * 
      */
     @Override
-    public void writeGraph(Graph toWrite) {
+    public void writeGraph(Graph toWrite){
         File output = new File(getOutput(), toWrite.getName());
         boolean error = false;
         
@@ -116,18 +119,30 @@ public final class SimpleGraphIO implements GraphReader, GraphWriter {
         }
         
         try (BufferedWriter bW = new BufferedWriter(new FileWriter(output))) {
-            for (Edge edge : toWrite.getEdgeList()) {
-                int weight = (Integer) edge.getData();
-                String line = String.format("%s\t%s\t%d", 
-                        edge.getSource().getIdentifier(), 
-                        edge.getDestination().getIdentifier(), weight);
-                bW.write(line);
-                bW.newLine();
-                if (getLogger() != null) {
-                    getLogger().logInfo(LogLevel.VERBOSE, 
-                            "GraphIO: Wrote line to graph file: " + line);
-                }
-            }
+        	if (!toWrite.getEdgeList().isEmpty())
+        	{
+        		
+      			// to see if the graph given has no nodesS
+	            for (Edge edge : toWrite.getEdgeList()) {
+	              
+	            	Integer weight = verifyRelationship(edge.getData());
+	                String line = String.format("%s\t%s\t%s", 
+	                        edge.getSource().getIdentifier(), 
+	                        edge.getDestination().getIdentifier(), weight); // last variable is for 
+	                bW.write(line);
+	                bW.newLine();
+	                
+	                if (getLogger() != null) {
+	                    getLogger().logInfo(LogLevel.VERBOSE, 
+	                            "GraphIO: Wrote line to graph file: " + line);
+	                            
+	               
+	                }
+	                
+	            }
+	            
+        	}
+        	
         } catch (IOException ioe) {
             error = true;
             if (getLogger() != null) {
@@ -135,7 +150,8 @@ public final class SimpleGraphIO implements GraphReader, GraphWriter {
                         "GraphIO: Error writing graph to file: "
                         + toWrite.getName());
             }
-        } finally {
+        }
+        finally {
             String success = error ? "Failed to write" : "Succesfully wrote";
             if (getLogger() != null) {
                 getLogger().logInfo(LogLevel.NORMAL, "GraphIO: " + success +
@@ -161,4 +177,20 @@ public final class SimpleGraphIO implements GraphReader, GraphWriter {
         }
         return true;
     }
+    
+    /**
+     * rapin001 @ 3/2020
+     * Function to verify the edge data is an Integer
+     * 
+     * @param edgeData object that you want to verify the class of to be Integer
+     * @return	Integer		edge weight or 0 if edge data is not an Integer
+     */
+    private Integer verifyRelationship(Object edgeData) {
+        if (edgeData instanceof Integer)
+            return (Integer) edgeData;
+        else
+            return 0;
+    }
 }
+
+

@@ -63,7 +63,7 @@ public class DepthFirstTraversalSearch extends Algorithm {
                         "DFTS: Setting Node as root: " + current.toString());
             }
             
-            Graph subGraph = new ConditionedGraph("[DFTS] N[" + current + "]-" + 
+            Graph subGraph = new ConditionedGraph("[DFS]_N[" + current + "]_" + 
                 graph.getName(), args.getConditionsList());
             ArrayList<Node> visited = new ArrayList<>();
             visited.add(current);

@@ -145,7 +145,7 @@ public class SubgraphFinderTask extends AbstractNetworkTask
                             .equals(nodeName2))
                     .toArray()[0];
             
-            Object data = null;
+            Object data = network.getDefaultEdgeTable().getRow(cyedge.getSUID()).get("weight", Integer.class);
             if (config.getOrderingColumn() != null) {
                 data = network.getRow(cyedge).getRaw(config.getOrderingColumn()
                         .getName());

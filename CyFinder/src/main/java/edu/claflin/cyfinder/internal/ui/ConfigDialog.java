@@ -300,7 +300,10 @@ public class ConfigDialog extends JDialog implements ActionListener,
                 getConstraints(0, 8, 4, 1, 1, 0, 
                         GridBagConstraints.BOTH, GridBagConstraints.CENTER, 
                         0, 0, insets));
-        add(sortGraphSelection, getConstraints(0, 9, 1, 1, 1, 1,
+        add(new JLabel("Graph Output Sort Order"), getConstraints(0, 9, 2, 1, 1, 1,
+                GridBagConstraints.NONE, GridBagConstraints.CENTER,
+                0, 0, insets));
+        add(sortGraphSelection, getConstraints(2, 9, 2, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.CENTER,
                 0, 0, insets));
         add(iCheckBox, getConstraints(0, 10, 4, 1, 1, 1,

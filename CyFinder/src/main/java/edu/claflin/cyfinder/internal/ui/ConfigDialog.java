@@ -315,15 +315,15 @@ public class ConfigDialog extends JDialog implements ActionListener,
         add(sCheckBox, getConstraints(0, 12, 4, 1, 1, 1,
                 GridBagConstraints.BOTH, GridBagConstraints.CENTER,
                 0, 0, insets));
-        add(new JLabel("k-partite number (optional, minimum 3)"), getConstraints(0, 13, 2, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.CENTER,0, 0, insets));
-        add(partiteField, getConstraints(2, 13, 2, 1, 1, 1,
+        //add(new JLabel("DISABLED: k-partite number (optional, minimum 3)"), getConstraints(0, 13, 2, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.CENTER,0, 0, insets));
+        /*add(partiteField, getConstraints(2, 13, 2, 1, 1, 1,
                 GridBagConstraints.BOTH, GridBagConstraints.CENTER,
-                0, 0, insets));
+                0, 0, insets));*/
         add(new JSeparator(JSeparator.HORIZONTAL),
-                getConstraints(0, 14, 4, 1, 1, 0,
+                getConstraints(0, 13, 4, 1, 1, 0,
                         GridBagConstraints.BOTH, GridBagConstraints.CENTER,
                         0, 0, insets));
-        add(doneButton, getConstraints(2, 15, 2, 1, 1, 1,
+        add(doneButton, getConstraints(2, 14, 2, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.LINE_END,
                 0, 0, insets));
         //testing();

@@ -8,6 +8,8 @@ import edu.claflin.finder.log.LogLevel;
 import edu.claflin.finder.logic.Graph;
 import edu.claflin.finder.logic.Edge;
 import edu.claflin.finder.logic.Node;
+import edu.claflin.finder.logic.cygrouper.GraphAverageWeight;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -134,12 +136,14 @@ public final class SimpleGraphIO implements GraphReader, GraphWriter {
 	                
 	                if (getLogger() != null) {
 	                    getLogger().logInfo(LogLevel.VERBOSE, 
-	                            "GraphIO: Wrote line to graph file: " + line);
-	                            
-	               
+	                            "GraphIO: Wrote line to graph file: " + line);	                           
+	          
 	                }
 	                
 	            }
+	            
+	            bW.write("Average edge weight: " + GraphAverageWeight.getAverageWeight(toWrite));
+	            bW.newLine();
 	            
         	}
         	

@@ -300,10 +300,7 @@ public class ConfigDialog extends JDialog implements ActionListener,
                 getConstraints(0, 8, 4, 1, 1, 0, 
                         GridBagConstraints.BOTH, GridBagConstraints.CENTER, 
                         0, 0, insets));
-        add(new JLabel("Graph Output Sort Order"), getConstraints(0, 9, 2, 1, 1, 1,
-                GridBagConstraints.NONE, GridBagConstraints.CENTER,
-                0, 0, insets));
-        add(sortGraphSelection, getConstraints(2, 9, 2, 1, 1, 1,
+        add(sortGraphSelection, getConstraints(0, 9, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.CENTER,
                 0, 0, insets));
         add(iCheckBox, getConstraints(0, 10, 4, 1, 1, 1,
@@ -315,15 +312,15 @@ public class ConfigDialog extends JDialog implements ActionListener,
         add(sCheckBox, getConstraints(0, 12, 4, 1, 1, 1,
                 GridBagConstraints.BOTH, GridBagConstraints.CENTER,
                 0, 0, insets));
-        //add(new JLabel("DISABLED: k-partite number (optional, minimum 3)"), getConstraints(0, 13, 2, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.CENTER,0, 0, insets));
-        /*add(partiteField, getConstraints(2, 13, 2, 1, 1, 1,
+        add(new JLabel("k-partite number (optional, minimum 3)"), getConstraints(0, 13, 2, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.CENTER,0, 0, insets));
+        add(partiteField, getConstraints(2, 13, 2, 1, 1, 1,
                 GridBagConstraints.BOTH, GridBagConstraints.CENTER,
-                0, 0, insets));*/
+                0, 0, insets));
         add(new JSeparator(JSeparator.HORIZONTAL),
-                getConstraints(0, 13, 4, 1, 1, 0,
+                getConstraints(0, 14, 4, 1, 1, 0,
                         GridBagConstraints.BOTH, GridBagConstraints.CENTER,
                         0, 0, insets));
-        add(doneButton, getConstraints(2, 14, 2, 1, 1, 1,
+        add(doneButton, getConstraints(2, 15, 2, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.LINE_END,
                 0, 0, insets));
         //testing();
@@ -487,10 +484,11 @@ public class ConfigDialog extends JDialog implements ActionListener,
              * rapin001@ 2/20
              * Added a error message when user selects save to file while issue with feature is being worked on 
              */
-        	else if (sCheckBox.isSelected())
+        /*	else if (sCheckBox.isSelected())
         	{
         		 JOptionPane.showMessageDialog(this, "Currently the option:\n\n\t Save found subgraph to file  \n\n is not supported!", errorTitle, JOptionPane.ERROR_MESSAGE);
         	}
+        	*/
             else {
                 ActionEvent newEvent = null;
                 try {

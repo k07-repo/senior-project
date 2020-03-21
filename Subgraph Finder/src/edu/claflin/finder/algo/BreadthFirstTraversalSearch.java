@@ -84,7 +84,7 @@ public class BreadthFirstTraversalSearch extends Algorithm {
      * @return the Graph object representing the found subgraph.
      */
     private Graph searchNode(Graph graph, Node node) {
-        ConditionedGraph subGraph = new ConditionedGraph("[BFTS] N[" + node + "]-" + 
+        ConditionedGraph subGraph = new ConditionedGraph("[BFS]_N[" + node + "]_" + 
                 graph.getName(), args.getConditionsList());
         subGraph.addNode(node);
         

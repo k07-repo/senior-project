@@ -484,10 +484,11 @@ public class ConfigDialog extends JDialog implements ActionListener,
              * rapin001@ 2/20
              * Added a error message when user selects save to file while issue with feature is being worked on 
              */
-        	else if (sCheckBox.isSelected())
+        /*	else if (sCheckBox.isSelected())
         	{
         		 JOptionPane.showMessageDialog(this, "Currently the option:\n\n\t Save found subgraph to file  \n\n is not supported!", errorTitle, JOptionPane.ERROR_MESSAGE);
         	}
+        	*/
             else {
                 ActionEvent newEvent = null;
                 try {

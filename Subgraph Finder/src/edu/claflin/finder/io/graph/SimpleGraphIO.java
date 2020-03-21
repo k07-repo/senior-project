@@ -142,9 +142,8 @@ public final class SimpleGraphIO implements GraphReader, GraphWriter {
 	                
 	            }
 	            
-	            bW.write("Average edge weight: " + GraphAverageWeight.getAverageWeight(toWrite));
-	            bW.newLine();
-	            
+	            bW.write("Average graph weight: " + GraphAverageWeight.getAverageWeight(toWrite));
+	            bW.newLine();           
         	}
         	
         } catch (IOException ioe) {

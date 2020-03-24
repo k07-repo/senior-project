@@ -173,8 +173,11 @@ public class SubgraphFinderTask extends AbstractNetworkTask
         taskMonitor.setStatusMessage("Searching for subgraphs...");
         taskMonitor.setProgress(0D);
 
+        //added updated status messages
+        taskMonitor.setStatusMessage("Checking selected agorithm...");
         Algorithm algo = config.getAlgo();
         algo.addPropertyChangeListener(this);
+        taskMonitor.setStatusMessage("Processing graphs based on " + config.getAlgo().toString());
         ArrayList<Graph> graphs = algo.process(target);
         return graphs;
     }

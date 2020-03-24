@@ -475,11 +475,12 @@ public class ConfigDialog extends JDialog implements ActionListener,
              * rapin001 @ 2/20
              * Added a error message when user tries to select: Currently the option: Bipartite + Breath First Traversal Search + No Edge Presertvation while the issue is resolved
              */
-        	else if (conditionsList.getSelectedValue().toString().substring(startCharCond).equals(biPartiteCon) && algorithmsList.getSelectedValuesList().toString().substring(startCharAlgo).equals(BFTSSting) && !pCheckBox.isSelected())
+        /*
+            else if (conditionsList.getSelectedValue().toString().substring(startCharCond).equals(biPartiteCon) && algorithmsList.getSelectedValuesList().toString().substring(startCharAlgo).equals(BFTSSting) && !pCheckBox.isSelected())
         	{
         		 JOptionPane.showMessageDialog(this, "Currently the option:\n\n\t Bipartite + Breath First Traversal Search + No Edge Presertvation \n\n is not supported!", errorTitle, JOptionPane.ERROR_MESSAGE);
         	}
-            
+          */  
             /*
              * rapin001@ 2/20
              * Added a error message when user selects save to file while issue with feature is being worked on 

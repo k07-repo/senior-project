@@ -84,8 +84,10 @@ public class BreadthFirstTraversalSearch extends Algorithm {
      * @return the Graph object representing the found subgraph.
      */
     private Graph searchNode(Graph graph, Node node) {
-        ConditionedGraph subGraph = new ConditionedGraph("[BFS]_N[" + node + "]_" + 
+       //set subgraph name
+    	ConditionedGraph subGraph = new ConditionedGraph("[BFS]_N[" + node + "]_" + 
                 graph.getName(), args.getConditionsList());
+        //add parameter node to subgraph
         subGraph.addNode(node);
         
         Queue<Edge> queue;
@@ -105,8 +107,16 @@ public class BreadthFirstTraversalSearch extends Algorithm {
         else
             queue = new LinkedList<>();
         
+        //add edges to the queue
         LinkedList<Node> visited = new LinkedList();
-        queue.add(new Edge(null, node, 0, false));
+        graph.getAdjacencyList(node).stream()
+        .forEach(n -> {
+            Edge e = graph.getEdge(node, n);
+            if (!visited.contains(n))
+                queue.add(e);
+        });
+        
+      //  queue.add(new Edge(null, node, 0, false));
         
         if (getLogger() != null) {
             getLogger().logAlgo(LogLevel.DEBUG, "BFTS: Initialized queue.");
@@ -118,10 +128,14 @@ public class BreadthFirstTraversalSearch extends Algorithm {
             Edge currentEdge = queue.remove();
             Node current;
             if (currentEdge.isUndirected()) {
-                if (visited.contains(currentEdge.getSource())) {
-                    current = currentEdge.getDestination();
-                } else {
+                if (!visited.contains(currentEdge.getSource())) {
                     current = currentEdge.getSource();
+                } else if (!visited.contains(currentEdge.getDestination())){
+                    current = currentEdge.getDestination();
+                }
+                else
+                {
+                	continue;
                 }
             } else {
                 current = currentEdge.getDestination();

@@ -126,8 +126,6 @@ public final class SimpleGraphIO implements GraphReader, GraphWriter {
         		
       			// to see if the graph given has no nodesS
 	            for (Edge edge : toWrite.getEdgeList()) {
-	              
-	            	
 	            	Integer weight = verifyRelationship(edge.getData());
 	                String line = String.format("%s\t%s\t%s", 
 	                        edge.getSource().getIdentifier(), 
@@ -135,16 +133,11 @@ public final class SimpleGraphIO implements GraphReader, GraphWriter {
 	                bW.write(line);
 	                bW.newLine();
 	               
-	                
 	                if (getLogger() != null) {
 	                    getLogger().logInfo(LogLevel.VERBOSE, 
 	                            "GraphIO: Wrote line to graph file: " + line);
-	                            
-	               
-	                }
-	                
+	                } 
 	            }
-
 	            bW.write("Average edge weight: " + GraphAverageWeight.getAverageWeight(toWrite));
 	            bW.newLine();
         	}

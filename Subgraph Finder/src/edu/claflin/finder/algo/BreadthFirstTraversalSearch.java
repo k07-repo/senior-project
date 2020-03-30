@@ -109,15 +109,16 @@ public class BreadthFirstTraversalSearch extends Algorithm {
         
         //add edges to the queue
         LinkedList<Node> visited = new LinkedList();
+      /*
         graph.getAdjacencyList(node).stream()
         .forEach(n -> {
             Edge e = graph.getEdge(node, n);
             if (!visited.contains(n))
                 queue.add(e);
+       
         });
-        
-      //  queue.add(new Edge(null, node, 0, false));
-        
+        */
+       queue.add(new Edge(null, node, 0, false));
         if (getLogger() != null) {
             getLogger().logAlgo(LogLevel.DEBUG, "BFTS: Initialized queue.");
         }
@@ -133,8 +134,7 @@ public class BreadthFirstTraversalSearch extends Algorithm {
                 } else if (!visited.contains(currentEdge.getDestination())){
                     current = currentEdge.getDestination();
                 }
-                else
-                {
+                else{
                 	continue;
                 }
             } else {

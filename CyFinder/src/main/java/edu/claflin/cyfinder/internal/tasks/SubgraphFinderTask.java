@@ -247,8 +247,8 @@ public class SubgraphFinderTask extends AbstractNetworkTask
                     CyRow row =sub.getDefaultNodeTable().getRow(anode.getCyNode().getSUID());
                     CygrouperNode grp = m.get(row.get("name",String.class));                    
                    
-                    row.set("group",grp.group);
-                    row.set("partition number", grp.kPartiteGroupNumber + "");
+                   row.set("group",grp.group);
+                   row.set("partition number", grp.kPartiteGroupNumber + "");
                     
                     
                 });

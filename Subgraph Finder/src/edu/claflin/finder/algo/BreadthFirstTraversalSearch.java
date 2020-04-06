@@ -155,8 +155,8 @@ public class BreadthFirstTraversalSearch extends Algorithm {
                 // graph all at once.
                 if (preservative != null && preservative) {
                     List<Node> nAdjacency = graph.getAdjacencyList(neighbor);
-                    nAdjacency.retainAll(subGraph.getNodeList());
-                    nAdjacency.stream().forEach(n -> {
+                    nAdjacency.retainAll(subGraph.getNodeList()); //removes any node not in the node list
+                    nAdjacency.stream().forEach(n -> { //for each node in the adjacency list, get the edge from the current node, and add it here if it's not already in 
                         Edge e = graph.getEdge(neighbor, n);
                         if (!eList.contains(e)) {
                             eList.add(e);

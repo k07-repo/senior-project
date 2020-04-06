@@ -555,4 +555,39 @@ public class Graph {
         
         return new Graph(graphName, nodeList, edgeList);
     }
+    
+    /**
+     * Clone method that only clones the node list, done for convenience because lists don't have built in cloning.
+     *      *
+     * @return a unique copy of the graph's node list
+     */
+    public ArrayList<Node> uniqueCopyNodeList() {
+    	 ArrayList<Node> nodeList = new ArrayList<>();
+    	 this.nodeList.stream().forEach(node -> nodeList.add(node.duplicate()));
+    	 return nodeList;
+    }
+    
+    /**
+     * Intersects this graph's node list with the input list.
+     * 
+     * @param nodeList the list to intersect with
+     */
+    public void intersect(List<Node> nodeList) {
+    	this.getNodeList().retainAll(nodeList);
+    }
+    
+    /**
+     * Removes a node from the set. Only used with the Bron-Kerbosch algorithm right now, hopefully doesn't break anything
+     * Does NOT affect edges!!!!!!! At time of writing may cause issues if you rely on it to do so
+     * 
+     * @param node the node to remove
+     */
+    public void removeNode(Node node) {
+    	for(Node current: nodeList) {
+    		if(current.equals(node)) {
+    			nodeList.remove(current);
+    		}
+    	}    	
+    }
+    
 }

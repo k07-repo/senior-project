@@ -109,25 +109,26 @@ public class BreadthFirstTraversalSearch extends Algorithm {
         
         //add edges to the queue
         LinkedList<Node> visited = new LinkedList();
-      /*
-        graph.getAdjacencyList(node).stream()
-        .forEach(n -> {
-            Edge e = graph.getEdge(node, n);
-            if (!visited.contains(n))
-                queue.add(e);
+        
+        Boolean preservative = args.getBoolean(ArgumentsBundle.COMMON_ARGS.EDGE_PRESERVATION.toString());
        
-        });
-        */
-       queue.add(new Edge(null, node, 0, false));
+        if (true)//for testing
+        {
+        	//entry point in to the search, an edge that starts from nothing and leads to the root node
+        	queue.add(new Edge(null, node, 0, false));
+        }
+
         if (getLogger() != null) {
             getLogger().logAlgo(LogLevel.DEBUG, "BFTS: Initialized queue.");
         }
         
-        Boolean preservative = args.getBoolean(ArgumentsBundle.COMMON_ARGS.EDGE_PRESERVATION.toString());
+
         
         while(!queue.isEmpty()) {
             Edge currentEdge = queue.remove();
             Node current;
+            
+            //since the queue is for edges, need to get the node that we are currently on from the edge
             if (currentEdge.isUndirected()) {
                 if (!visited.contains(currentEdge.getSource())) {
                     current = currentEdge.getSource();
@@ -137,9 +138,13 @@ public class BreadthFirstTraversalSearch extends Algorithm {
                 else{
                 	continue;
                 }
-            } else {
-                current = currentEdge.getDestination();
+
+            }	
+            else {
+            	current = currentEdge.getDestination();
             }
+            
+            // mark current node as visited 
             visited.add(current);
             
             if (getLogger() != null) {
@@ -150,44 +155,63 @@ public class BreadthFirstTraversalSearch extends Algorithm {
             // Check to see if the current node has any edges back into the 
             // graph and attempt add them in sequence.
             // Not unnecessary if the method is NOT preservative.
+            
+            //Adds elements to subgraph to be returned
             List<Node> cAdjacency = graph.getAdjacencyList(current);
             List<Edge> cEdges = new ArrayList<>();
+          
             cAdjacency.retainAll(subGraph.getNodeList());
             cAdjacency.stream().forEach(n -> {
-                cEdges.add(graph.getEdge(current, n));
+            	Edge e = graph.getEdge(current, n);
+            	if (!cEdges.contains(e) && e != null)
+            	{
+            		cEdges.add(e);
+            	}
             });
             cEdges.removeAll(subGraph.getEdgeList());
             cEdges.stream().forEach(e -> subGraph.addEdge(e));
-            
+           
+            //checks for adjacent nodes
             for (Node neighbor : graph.getAdjacencyList(current)) {
-                List<Node> nList = new ArrayList<>();
-                List<Edge> eList = new ArrayList<>();
-                nList.add(neighbor);
-                eList.add(graph.getEdge(current, neighbor));
-                
-                // If preservative, add a node and all it's edges back into the 
-                // graph all at once.
-                if (preservative != null && preservative) {
-                    List<Node> nAdjacency = graph.getAdjacencyList(neighbor);
-                    nAdjacency.retainAll(subGraph.getNodeList());
-                    nAdjacency.stream().forEach(n -> {
-                        Edge e = graph.getEdge(neighbor, n);
-                        if (!eList.contains(e)) {
-                            eList.add(e);
-                        }
-                    });
-                }
-                
-                // Cull already present elements from the lists.
-                nList.removeAll(subGraph.getNodeList());
-                eList.removeAll(subGraph.getEdgeList());
-                
-                // Do the addition, and, if successful, add the node to the 
-                // queue.
-                if (subGraph.addPartialGraph(nList, eList) && !visited.contains(neighbor)) {
-                    queue.add(graph.getEdge(current, neighbor));
-                }
+
+	            	List<Node> nList = new ArrayList<>();
+	                List<Edge> eList = new ArrayList<>();
+	                if (!visited.contains(neighbor))
+	                {
+		                //adds each adjacent node to the node list and adding an edge 
+		                //between the two nodes
+		                nList.add(neighbor);
+		                eList.add(graph.getEdge(current, neighbor));
+	                }
+	                // If preservative, add a node and all it's edges back into the 
+	                // graph all at once.
+	                if (preservative != null && preservative) {
+	                    List<Node> nAdjacency = graph.getAdjacencyList(neighbor);
+	                    nAdjacency.retainAll(subGraph.getNodeList());
+	                    nAdjacency.stream().forEach(n -> {
+	                        Edge e = graph.getEdge(neighbor, n);
+	                        if (!eList.contains(e)) {
+	                            eList.add(e);
+	                        }
+	                    });
+	                }    
+	                    // Cull already present elements from the lists.
+		                nList.removeAll(subGraph.getNodeList());
+		                eList.removeAll(subGraph.getEdgeList());
+		                
+	               
+	                
+
+	                // Do the addition, and, if successful, add the node to the 
+	                // queue.
+	                if ( !visited.contains(neighbor) ) {
+	                	if(subGraph.addPartialGraph(nList, eList)) {
+	                
+	                		queue.add(graph.getEdge(current, neighbor));
+	                	}
+	                }
             }
+            
         }
         
         return subGraph;

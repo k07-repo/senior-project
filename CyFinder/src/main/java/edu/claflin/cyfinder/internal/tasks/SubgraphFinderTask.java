@@ -240,7 +240,15 @@ public class SubgraphFinderTask extends AbstractNetworkTask
                 sub.getTable(CyNode.class,CyNetwork.LOCAL_ATTRS).createColumn("group", String.class, false);
                 sub.getTable(CyNode.class,CyNetwork.LOCAL_ATTRS).createColumn("partition number", String.class, false);
                 sub.getRow(sub).set(CySubNetwork.NAME, name);
-                Map<String, CygrouperNode> m = Communicator.getSingleton().groups.get(count -1);
+                Map<String, CygrouperNode> m;
+                try
+                {
+                	m = Communicator.getSingleton().groups.get(count -1);
+                } catch (IndexOutOfBoundsException e) {
+                	continue;
+                }
+                	
+                
                 graph.getNodeList().stream().forEach(node -> {
                     CyNodeAdapter anode = (CyNodeAdapter) node;
                     sub.addNode(anode.getCyNode());

@@ -590,4 +590,36 @@ public class Graph {
     	}    	
     }
     
+    /**
+     * Adds all edges containing the input node from the input graph to this graph,
+     * provided that the other vertex is already within this graph.
+     * Probably not very efficient
+     * 
+     * @param graph the graph
+     * @param node the node
+     */
+    public void transferEdgesContainingNodeFromGraph(Graph graph, Node node) {
+    	for(Edge e: graph.getEdgeList()) {
+            if(e.getSource().equals(node) && this.containsNode(e.getDestination()) ||
+            		e.getDestination().equals(node) && this.containsNode(e.getSource()) {
+                this.edgeList.add(e);
+            }
+        }
+    }
+    
+    /**
+     * Checks if the graph contains the given node.
+     * 
+     * @param node the node to check for
+     * @return whether or not node is in this graph
+     */
+    public boolean containsNode(Node node) {
+    	for(Node n: this.getNodeList()) {
+    		if(n.equals(node)) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
 }

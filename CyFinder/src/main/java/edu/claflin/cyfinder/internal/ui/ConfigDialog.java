@@ -463,25 +463,42 @@ public class ConfigDialog extends JDialog implements ActionListener,
              * rapin001 @ 2/20
              * Added a warning in case clique and no edge preservation is used with an undirected graph created using the addative method while the issue is addressed 
              */
+<<<<<<< HEAD
    /*         else if (conditionsList.getSelectedValue().toString().substring(startCharCond).equals(cliqueCon)  && !pCheckBox.isSelected() && !tried)
+=======
+         /*   else if (conditionsList.getSelectedValue().toString().substring(startCharCond).equals(cliqueCon)  && !pCheckBox.isSelected() && !tried)
+>>>>>>> branch 'master' of https://github.com/k07-repo/senior-project.git
             {
             	tried = true;
             	JOptionPane.showMessageDialog(this, "Currently the option:\n\n\t Clique + Breath First or Depth First Traversal Searches + No Edge preservation\n"
             			+ "When the graphed worked on is made undirecte using the: Additive method\n\n is not supported!\n\n"
             			+ "Please change your search criteria or press \"Done\" again to run", "Warrning", JOptionPane.ERROR_MESSAGE);
      
+<<<<<<< HEAD
             }
       */      
+=======
+            }*/
+>>>>>>> branch 'master' of https://github.com/k07-repo/senior-project.git
             /*
              * rapin001 @ 2/20
              * Added a error message when user tries to select: Currently the option: Bipartite + Breath First Traversal Search + No Edge Presertvation while the issue is resolved
              */
+<<<<<<< HEAD
         
    /*         else if (conditionsList.getSelectedValue().toString().substring(startCharCond).equals(biPartiteCon) && algorithmsList.getSelectedValuesList().toString().substring(startCharAlgo).equals(BFTSSting) && !pCheckBox.isSelected())
+=======
+        /*	else if (conditionsList.getSelectedValue().toString().substring(startCharCond).equals(biPartiteCon) && algorithmsList.getSelectedValuesList().toString().substring(startCharAlgo).equals(BFTSSting) && !pCheckBox.isSelected())
+>>>>>>> branch 'master' of https://github.com/k07-repo/senior-project.git
         	{
         		 JOptionPane.showMessageDialog(this, "Currently the option:\n\n\t Bipartite + Breath First Traversal Search + No Edge Presertvation \n\n is not supported!", errorTitle, JOptionPane.ERROR_MESSAGE);
+<<<<<<< HEAD
         	}
     */        
+=======
+        	}*/
+            
+>>>>>>> branch 'master' of https://github.com/k07-repo/senior-project.git
             /*
              * rapin001@ 2/20
              * Added a error message when user selects save to file while issue with feature is being worked on 
@@ -490,7 +507,12 @@ public class ConfigDialog extends JDialog implements ActionListener,
         	{
         		 JOptionPane.showMessageDialog(this, "Currently the option:\n\n\t Save found subgraph to file  \n\n is not supported!", errorTitle, JOptionPane.ERROR_MESSAGE);
         	}
+<<<<<<< HEAD
       */ 	
+=======
+        	*/
+            
+>>>>>>> branch 'master' of https://github.com/k07-repo/senior-project.git
             else {
                 ActionEvent newEvent = null;
                 try {

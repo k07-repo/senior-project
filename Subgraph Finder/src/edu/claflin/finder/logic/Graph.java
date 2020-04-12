@@ -601,7 +601,7 @@ public class Graph {
     public void transferEdgesContainingNodeFromGraph(Graph graph, Node node) {
     	for(Edge e: graph.getEdgeList()) {
             if(e.getSource().equals(node) && this.containsNode(e.getDestination()) ||
-            		e.getDestination().equals(node) && this.containsNode(e.getSource()) {
+            		e.getDestination().equals(node) && this.containsNode(e.getSource())) {
                 this.edgeList.add(e);
             }
         }
@@ -622,4 +622,57 @@ public class Graph {
     	return false;
     }
     
+
+    //BRON KERBOSCH BIPARTITE STARTS HERE 
+    
+
+    /**
+     * Adds edges in between all possible pair combinations of nodes in a list
+     * if both nodes involved are present in the graph.
+     * 
+     * @param list The list of nodes
+     */
+    public void addEdgesBetweenAllNodesInList(ArrayList<Node> list) {
+        for(int k = 0; k < list.size(); k++) {
+            for(int j = k + 1; j < list.size(); j++) {
+            	Node first = list.get(j);
+            	Node second = list.get(k);
+            	if(this.containsNode(first) && this.containsNode(second)) {
+            		this.edgeList.add(new Edge(first, second, "", false));
+            	}         
+            }
+        }
+    }
+
+    /**
+     * Removes edges in between all possible pair combinations of nodes in a list
+     * if both nodes involved are present in the graph.
+     * 
+     * When used with Bron-Kerbosch bipartite, this removes all nodes since
+     * the precondition is that this is only used on the nodes in a single group,
+     * which are not supposed to have any edges to begin with.
+     * 
+     * @param list The list of nodes
+     */
+    public void removeEdgesBetweenAllNodesInList(ArrayList<Node> list) {
+        for(int k = 0; k < list.size(); k++) {
+            for(int j = k + 1; j < list.size(); j++) {
+                Edge toRemove = null;
+                for(Edge e: edgeList) {
+                    Node src = list.get(k);
+                    Node dest = list.get(j);
+                    if(((e.getSource().equals(src) && e.getDestination().equals(dest) ||
+                    		(e.getSource().equals(dest) && e.getDestination().equals(src))))) {
+                        toRemove = e;
+                        break;
+                    }
+                }                
+                
+                //Removal outside of the loop to prevent ConcurrentModificationException
+                if(toRemove != null) {
+                    edgeList.remove(toRemove);
+                }
+            }
+        }
+    }
 }

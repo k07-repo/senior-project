@@ -86,7 +86,8 @@ public class BronKerboschHandler {
                 //Neighbors uses the base (p2) here, this is important for now
                
                
-                r2.addNode(n);                    
+                r2.addNode(n);              
+                r2.transferEdgesContainingNodeFromGraph(p2, n);
                 p2.intersect(p2.getAdjacencyList(n));
                 x2.intersect(p2.getAdjacencyList(n));
                 bronKerbosch(results, r2, p2, x2);
@@ -97,5 +98,38 @@ public class BronKerboschHandler {
                 x.addNode(n);
             }
         }
+    }
+	
+	/**
+	 * Bipartite Bron Kerbosch algorithm that usees the above to find all complete bipartite graphs
+	 * within a bipartite graph.
+	 * 
+	 * This is done by adding edges between every node in both groups, using the above algorithm, and
+	 * removing all the added edges later on. 
+	 * 
+	 * THIS ONLY WORKS ON GRAPHS THAT ARE BIPARTITE!
+	 * 
+	 * @param graph the bipartite graph
+	 * @return array list of bipartite graphs
+	 */
+	public static ArrayList<Graph> bronKerboschBipartite(Graph graph) {
+		
+		//Need copy of the graph as we are going to modify this as part of the algorithm
+        Graph graphCopy = graph.uniqueCopy();
+       
+        ArrayList<ArrayList<Node>> groups = BronKerboschBipartiteUtils.bipartiteDivision(graphCopy);
+        graphCopy.addEdgesBetweenAllNodesInList(groups.get(0));
+        graphCopy.addEdgesBetweenAllNodesInList(groups.get(1));
+
+        ArrayList<Graph> results = new ArrayList<>();
+        bronKerbosch(results, new Graph("r"), graphCopy, new Graph("x"));
+
+        for(Graph g: results) {
+        	ArrayList<ArrayList<Node>> newGroups = BronKerboschBipartiteUtils.bipartiteDivision(g);
+            g.removeEdgesBetweenAllNodesInList(newGroups.get(0));
+            g.removeEdgesBetweenAllNodesInList(newGroups.get(1));
+
+        }
+        return results;
     }
 }

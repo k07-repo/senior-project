@@ -186,7 +186,7 @@ public class SubgraphFinderTask extends AbstractNetworkTask
     	
     	
         taskMonitor.setStatusMessage("Saving subgraphs...");
-        taskMonitor.setStatusMessage(LogUtil.path);
+       // taskMonitor.setStatusMessage(LogUtil.);
         taskMonitor.setProgress(0D);
         int operationCount = 0;
         if (config.isInPlace()) operationCount++;

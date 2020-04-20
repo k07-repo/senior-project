@@ -173,7 +173,7 @@ public class BreadthFirstTraversalSearch extends Algorithm {
            
             //checks for adjacent nodes
             for (Node neighbor : graph.getAdjacencyList(current)) {
-<<<<<<< HEAD
+
 
 	            	List<Node> nList = new ArrayList<>();
 	                List<Edge> eList = new ArrayList<>();
@@ -211,35 +211,6 @@ public class BreadthFirstTraversalSearch extends Algorithm {
 	                		queue.add(graph.getEdge(current, neighbor));
 	                	}
 	                }
-=======
-                List<Node> nList = new ArrayList<>();
-                List<Edge> eList = new ArrayList<>();
-                nList.add(neighbor);
-                eList.add(graph.getEdge(current, neighbor));
-                
-                // If preservative, add a node and all it's edges back into the 
-                // graph all at once.
-                if (preservative != null && preservative) {
-                    List<Node> nAdjacency = graph.getAdjacencyList(neighbor);
-                    nAdjacency.retainAll(subGraph.getNodeList()); //removes any node not in the node list
-                    nAdjacency.stream().forEach(n -> { //for each node in the adjacency list, get the edge from the current node, and add it here if it's not already in 
-                        Edge e = graph.getEdge(neighbor, n);
-                        if (!eList.contains(e)) {
-                            eList.add(e);
-                        }
-                    });
-                }
-                
-                // Cull already present elements from the lists.
-                nList.removeAll(subGraph.getNodeList());
-                eList.removeAll(subGraph.getEdgeList());
-                
-                // Do the addition, and, if successful, add the node to the 
-                // queue.
-                if (subGraph.addPartialGraph(nList, eList) && !visited.contains(neighbor)) {
-                    queue.add(graph.getEdge(current, neighbor));
-                }
->>>>>>> branch 'master' of https://github.com/k07-repo/senior-project.git
             }
             
         }

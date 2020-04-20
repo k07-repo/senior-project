@@ -33,7 +33,9 @@ public class CytogrouperMain {
         this.listener = listener;       
                 
         for(int i = 0; i < subgraphs.size(); i++) {
+        
         	//if the passed subgraph has no edges then continue to prevent an error
+          	//FIXME - will error if passed subgraph has no edges
         	if(subgraphs.get(i).getEdgeList().isEmpty())
         		continue;
             CygrouperAssembler assmble = new CygrouperAssembler(subgraphs.get(i).getEdgeList());
@@ -43,7 +45,7 @@ public class CytogrouperMain {
             //Currently disabled
             /*
             if(partiteNumber > 2) {
-            	kPartite(tree, partiteNumber);
+            	kPartite(tree, partiteNumber); 
             } */           
             
             results.add(tree);

@@ -6,6 +6,8 @@ import static edu.claflin.finder.Global.getLogger;
 import static edu.claflin.finder.Global.getOutput;
 import edu.claflin.finder.log.LogLevel;
 import edu.claflin.finder.logic.Graph;
+import edu.claflin.finder.logic.BronKerboschBipartiteUtils;
+import edu.claflin.finder.logic.BronKerboschHandler;
 import edu.claflin.finder.logic.Edge;
 import edu.claflin.finder.logic.Node;
 import edu.claflin.finder.logic.cygrouper.GraphAverageWeight;
@@ -164,7 +166,73 @@ public final class SimpleGraphIO implements GraphReader, GraphWriter {
                         " graph to file: " + output.getAbsolutePath());
             }
         }
+        
+        //This makes the program take a long time. Upon thinking about it further it might simply not be possible
+        //to use this algorithm with any reasonably sized graph
+        //writeExtraGraph(BronKerboschHandler.maximumCompleteClique(toWrite));
+       
     }
+    
+    
+    /**
+     * TESTING METHOD FOR BRON KERBOSCH BIPARTITE STUFF
+     */
+    /*
+    public void writeExtraGraph(Graph toWrite){
+        File output = new File(getOutput(), toWrite.getName() + " LCCG" + toWrite.getNodeCount() + toWrite.getEdgeList().size());
+        boolean error = false;
+        
+        if (getLogger() != null) {
+            getLogger().logInfo(LogLevel.NORMAL, 
+                    "GraphIO: Attempt to log graph to file: "
+                    + toWrite.getName());
+        }
+        
+        try (BufferedWriter bW = new BufferedWriter(new FileWriter(output))) {
+        	if (!toWrite.getEdgeList().isEmpty())
+        	{
+        		
+      			// to see if the graph given has no nodesS
+	            for (Edge edge : toWrite.getEdgeList()) {
+	              
+	            	
+	            	Integer weight = verifyRelationship(edge.getData());
+	                String line = String.format("%s\t%s\t%s", 
+	                        edge.getSource().getIdentifier(), 
+	                        edge.getDestination().getIdentifier(), weight); // last variable is for 
+	                bW.write(line);
+	                bW.newLine();
+	               
+	                
+	                if (getLogger() != null) {
+	                    getLogger().logInfo(LogLevel.VERBOSE, 
+	                            "GraphIO: Wrote line to graph file: " + line);
+	                            
+	               
+	                }
+	                
+	            }
+
+	            bW.write("Average edge weight: " + GraphAverageWeight.getAverageWeight(toWrite));
+	            bW.newLine();
+        	}
+        	
+        } catch (IOException ioe) {
+            error = true;
+            if (getLogger() != null) {
+                getLogger().logInfo(LogLevel.NORMAL, 
+                        "GraphIO: Error writing graph to file: "
+                        + toWrite.getName());
+            }
+        }
+        finally {
+            String success = error ? "Failed to write" : "Succesfully wrote";
+            if (getLogger() != null) {
+                getLogger().logInfo(LogLevel.NORMAL, "GraphIO: " + success +
+                        " graph to file: " + output.getAbsolutePath());
+            }
+        }
+    } */
     
     /**
      * Tests to see if a File is a valid graph file.  Currently only tests by

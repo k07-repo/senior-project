@@ -542,17 +542,18 @@ public class Graph {
         
         this.nodeList.stream()
                 .forEach(node -> nodeList.add(node.duplicate()));
-        this.edgeList.stream()
-                /* This is gonna look crazy, but network components may be 
-                equivalent even if they are not the same object in memory. This 
-                means we can obtain the new Node from the new list by utilizing 
-                its equivalency with the old Node in the old list.*/
-                .forEach(edge -> {
-                    Node newSource = nodeList.get(nodeList.indexOf(edge.getSource()));
-                    Node newDest = nodeList.get(nodeList.indexOf(edge.getDestination()));
-                    edgeList.add(edge.duplicate(newSource, newDest));
-                });
         
+        for(Edge edge: this.getEdgeList()) {
+        	int source = nodeList.indexOf(edge.getSource());
+        	int dest = nodeList.indexOf(edge.getDestination());
+        	
+        	if(source == -1 || dest == -1) {
+        		continue;
+        	}
+        	
+        	edgeList.add(edge.duplicate(nodeList.get(source), nodeList.get(dest)));
+        }
+                
         return new Graph(graphName, nodeList, edgeList);
     }
     
@@ -563,7 +564,10 @@ public class Graph {
      */
     public ArrayList<Node> uniqueCopyNodeList() {
     	 ArrayList<Node> nodeList = new ArrayList<>();
-    	 this.nodeList.stream().forEach(node -> nodeList.add(node.duplicate()));
+    	 for(Node node: this.nodeList) {
+    		 Node newNode = new Node(node.getIdentifier());
+    		 nodeList.add(newNode);
+    	 }
     	 return nodeList;
     }
     
@@ -583,11 +587,14 @@ public class Graph {
      * @param node the node to remove
      */
     public void removeNode(Node node) {
+    	Node toRemove = null;
     	for(Node current: nodeList) {
     		if(current.equals(node)) {
-    			nodeList.remove(current);
+    			toRemove = current;
+    			break;
     		}
     	}    	
+    	nodeList.remove(toRemove);    	
     }
     
     /**

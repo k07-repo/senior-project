@@ -14,6 +14,25 @@ import java.util.Set;
  * @author kpuli007
  */
 public class BronKerboschBipartiteUtils {
+	
+	/**
+	 * Returns true if the provided graph is bipartite.
+	 * Copied from Bipartite Condition class, but this version is static.
+	 */
+	public static boolean isGraphBipartite(Graph graph) {
+		Set<Node> groupA = new HashSet<>();
+        Set<Node> groupB = new HashSet<>();
+
+        for (Node node : graph.getNodeList()) {
+            if (!satisfies(graph, groupA, groupB, node)) {
+            	//Return empty sets if the graph is not bipartite.
+                return false;
+            }
+        }
+        
+        return true;
+	}
+	
 	/**
      * Divides the given graph into bipartite sets.
      * 

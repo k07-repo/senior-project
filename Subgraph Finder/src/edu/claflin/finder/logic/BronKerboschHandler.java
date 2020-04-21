@@ -23,8 +23,6 @@ public class BronKerboschHandler {
 	 * @return the largest complete subgraph (clique)
 	 */
 	public static Graph maximumCompleteClique(Graph graph) {
-        System.out.println("---------------------");
-
         ArrayList<Graph> completeGraphs = bronKerbosch(graph);
 
         Graph maximumGraph = null;
@@ -37,9 +35,53 @@ public class BronKerboschHandler {
             }
         }
 
+        if(maximumGraph == null) {
+        	Graph result = new Graph("testing graph");
+        	result.addNode(new Node("No maximal clique found!"));
+        	return result;
+        }
         return maximumGraph;
 
-        //This is largest complete CLIQUE.
+        //This is the largest CLIQUE.
+    }
+	
+	/**
+	 * Given a graph, finds all complete subgraphs, and then returns the largest one.
+	 * 
+	 * @param graph the graph
+	 * @return the largest complete subgraph (clique)
+	 */
+	public static Graph maximumCompleteBipartiteGraph(Graph graph) {
+        ArrayList<Graph> completeGraphs = bronKerboschBipartite(graph);
+        
+        Graph testingGraph1 = new Graph("tg1");
+        testingGraph1.addNode(new Node("a triggered"));
+        
+        Graph testingGraph2 = new Graph("tg2");
+        testingGraph2.addNode(new Node("b triggered"));
+        
+        Graph maximumGraph = null;
+        int maximumSize = 0;
+        for(int k = 0; k < completeGraphs.size(); k++) {
+            Graph current = completeGraphs.get(k);
+            if(current.getNodeList().size() > maximumSize) {
+                maximumGraph = current;
+                maximumSize = current.getNodeList().size();
+            }
+        }
+
+        if(completeGraphs.size() == 0) {
+        	return testingGraph1;
+        }
+        
+        if(maximumGraph == null) {
+        	return testingGraph2;
+        }
+        
+        
+        return maximumGraph;
+
+        //This is the largest COMPLETE BIPARTITE GRAPH.
     }
 	
 	/**
@@ -67,8 +109,10 @@ public class BronKerboschHandler {
         //Ideally after algorithm is finished we just manually transpose the edgees with one swift pass
         //System.out.println(r + "\n" + p + "\n " + x + "\n");
         if(p.getNodeCount() <= 0 && x.getNodeCount() <= 0) {
-            results.add(r.uniqueCopy());
-            return;
+        	if(r.getEdgeList().size() > 0) {
+        		results.add(r.uniqueCopy());
+                return;
+        	}            
         }
         else {
             //Clone list before using to avoid concurrent modification exception
@@ -85,11 +129,15 @@ public class BronKerboschHandler {
                 //These functions should not affect the original graphs, thus the cloning
                 //Neighbors uses the base (p2) here, this is important for now
                
-               
-                r2.addNode(n);              
-                r2.transferEdgesContainingNodeFromGraph(p2, n);
+                if(!r2.containsNode(n)) {
+                	r2.addNode(n);       
+                	r2.transferEdgesContainingNodeFromGraph(p2, n);
+                }                  
+                //List<Node> adjList =p2.getAdjacencyList(n)
                 p2.intersect(p2.getAdjacencyList(n));
+                p2.removeNode(n);
                 x2.intersect(p2.getAdjacencyList(n));
+                x2.removeNode(n);
                 bronKerbosch(results, r2, p2, x2);
 
                 //Modify the original graphs for the next loop

@@ -173,8 +173,11 @@ public class SubgraphFinderTask extends AbstractNetworkTask
         taskMonitor.setStatusMessage("Searching for subgraphs...");
         taskMonitor.setProgress(0D);
 
+        //added updated status messages
+        taskMonitor.setStatusMessage("Checking selected agorithm...");
         Algorithm algo = config.getAlgo();
         algo.addPropertyChangeListener(this);
+        taskMonitor.setStatusMessage("Processing graphs based on " + config.getAlgo().toString());
         ArrayList<Graph> graphs = algo.process(target);
         return graphs;
     }
@@ -183,7 +186,7 @@ public class SubgraphFinderTask extends AbstractNetworkTask
     	
     	
         taskMonitor.setStatusMessage("Saving subgraphs...");
-        taskMonitor.setStatusMessage(LogUtil.path);
+       // taskMonitor.setStatusMessage(LogUtil.);
         taskMonitor.setProgress(0D);
         int operationCount = 0;
         if (config.isInPlace()) operationCount++;
@@ -237,15 +240,23 @@ public class SubgraphFinderTask extends AbstractNetworkTask
                 sub.getTable(CyNode.class,CyNetwork.LOCAL_ATTRS).createColumn("group", String.class, false);
                 sub.getTable(CyNode.class,CyNetwork.LOCAL_ATTRS).createColumn("partition number", String.class, false);
                 sub.getRow(sub).set(CySubNetwork.NAME, name);
-                Map<String, CygrouperNode> m = Communicator.getSingleton().groups.get(count -1);
+                Map<String, CygrouperNode> m;
+                try
+                {
+                	m = Communicator.getSingleton().groups.get(count -1);
+                } catch (IndexOutOfBoundsException e) {
+                	continue;
+                }
+                	
+                
                 graph.getNodeList().stream().forEach(node -> {
                     CyNodeAdapter anode = (CyNodeAdapter) node;
                     sub.addNode(anode.getCyNode());
                     CyRow row =sub.getDefaultNodeTable().getRow(anode.getCyNode().getSUID());
                     CygrouperNode grp = m.get(row.get("name",String.class));                    
                    
-                    row.set("group",grp.group);
-                    row.set("partition number", grp.kPartiteGroupNumber + "");
+                   row.set("group",grp.group);
+                   row.set("partition number", grp.kPartiteGroupNumber + "");
                     
                     
                 });

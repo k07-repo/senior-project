@@ -99,16 +99,37 @@ public class ConfigDialog extends JDialog implements ActionListener,
     
     /**
      * GUI: Conditions Label.
+     * And toolTip text
      */
-    private JLabel cLabel = new JLabel("Search Conditions");
+    private JLabel cLabel = new JLabel("Search Condition ?*");
+    private String cLabelInfo = "<html>Select One of the Given Search conditions:<p><br>"
+    		+ "1) Bi-Partite Condition 			-> When a node that belongs to one group has no direct\n<p>"
+    		+ "													connection to any other  node of the same group\n<p><br>"
+    		+ "2) Clique Condition	  			-> When every node is connected to every other node directly\n<p><br>"
+    		+ "3) Directed Clique Condtion	-> Similar to Clique, but this condition doesn't require there to be<p>"
+    		+ " 												 an edge from every node to every other node<p></html>";
+    
     /**
      * GUI: Algorithms Label.
+     * And toolTip text
      */
-    private JLabel aLabel = new JLabel("Search Algorithm(s)");
+    private JLabel aLabel = new JLabel("Search Algorithm ?*");
+    private String aLabelInfo = "<html>Select One of the Given Search Algorithms: <p><br>"
+    		+ "1) Breath First Traversal Search ->  It starts at the tree root and explores<p>"
+    		+ " all of the neighbor nodes at the present depth prior to moving on to the nodes at the next depth level.<p><br>"
+    		+ "2) Depth First Traversal Search -> The algorithm starts at the root node and <p>"
+    		+ "explores as far as possible along each branch before backtracking</html>";
     /**
      * GUI: Orderings Label.
+     * 
+     * And toolTip text
      */
-    private JLabel oLabel = new JLabel("Ordering:");
+    private JLabel oLabel = new JLabel("Ordering ?*:");
+    private String oLabelInfo ="<html>Select One of the Given Search Algorithms: <p><br>"
+    		+ "1) Void (Default Setting) -> No specific ordering<p><br>"
+    		+ "2) Edge Weight Comparitor -> Compares the subgraphs based on:<p>"
+    		+ "2.1. Weight -> based on the average weight of edges in the specific subgraph<p>"
+    		+ "2.2. SUID -> based on order of nodes ";
     
     /**
      * GUI: Scroll pane for the conditions list.
@@ -146,12 +167,37 @@ public class ConfigDialog extends JDialog implements ActionListener,
      * 
      *  tried parameter - if the user has made a choice already in case the 
      */
-    private JCheckBox pCheckBox = new JCheckBox("Edge Preservative", true);
+    private JLabel pCheckBoxLabel = new JLabel("Edge Preservative ?*");
+    private JCheckBox pCheckBox = new JCheckBox("", true);
+    private String pCheckBoxInfo = "<html>Select if the edge preservation is enabed :<p><br>"
+    		+ "Enabled -> Will abandon a node if any of its edges violates the condition<p><br>"
+    		+ "Disabled -> Will only abandon the edge that violates the condtion, not the whole node<p><br>"
+    		+ "Warning!<p>"
+    		+ "1) If DISABLED, the results might be false or might display nothing<p>"
+    		+ "2) Most use comes when using with the Bi-Partite condition</html>";
     private boolean tried = false;
     
+    
+    /**
+     * GUI: Lable for the save subgraph section of Gui
+     * 
+     * rapin001
+     */
+    private JLabel saveGraphOption = new JLabel("Display/storing options ?*");
+    private String saveGraphOptionInfo = "<html>Select display/save method for generated sub-graphs"
+    		+ "<p>Can select more than one of the following options<p><br>"
+    		+ "1) In-Place annotation of source graph -> generates a truth table for each subgraph showing whioch nodes are inclooded<p><br>"
+    		+ "2) New Child Graph beneath source graph -> generate and display seperate subgraphs based on the source graph in Cytoscape<p><br>"
+    		+ "3) Save found subgraph to file -> save generated subgraphs to file <br> -generates .txt file for each subgraph specifying<p></html>";
     /**
      * GUI: JComboBox for selecting a sort method for the graph outputs by size
      */
+   private JLabel sortGraphSelectionLabel = new JLabel("Save Order ?*");
+   private String sortGraphSelectionInfo = "<html>Select the order by which to display the subgraphs based on node count/average weight<p><br>"
+   		+ "1) None ->  no sorting order (Default option)<p>"
+   		+ "2) Ascending -> low to high node count<p>"
+   		+ "3) Descending -> high to low node count<p>"
+   		+ "4) Average Weight -> based on average weight of subgraph</html>";
     private JComboBox sortGraphSelection;
     
     /**
@@ -175,18 +221,29 @@ public class ConfigDialog extends JDialog implements ActionListener,
     /**
      * JTextField for selecting a k-partite number
      */
+    private JLabel partiteFieldLabel = new JLabel("K-partite number (optional, minimum 3) ?*");
     private JTextField partiteField = new JTextField();
+    private String partiteFieldInfo = "<html>Specify the k-partie number: <p><br>"
+    		+ "1) Leave Blank -> No ordering is applied<p><br>"
+    		+ "2) Type the number which specifies the range of the partition number (0 to k)<p>"
+    		+ "-- Min number is 3</html>";
     /**
      * The File object indicating the directory to save subgraphs in.
      */
     private File saveDirectory = null;
     
+    /**
+     * Add lable to instruction on how to get more info
+     * rapin001
+     */
+    private JLabel helpLabel = new JLabel ("Need Help?*");
+    private String  helpInfo = "<html>For more information about the available options and features,<p> position your mouse cursor over the  ->\"?*\"<-  symbol</html>";
     
     /**
      *  rapin001 @ 2/19/20
      *  For testing which condition and which algorith is used
      */
-    private final int startCharCond = 36;
+    private final int startCharCond = -36;
     
     /**
      * String for Bipartite Condition
@@ -214,6 +271,8 @@ public class ConfigDialog extends JDialog implements ActionListener,
      * Variables to hold which algorithm is chosen
      */
     private final int startCharAlgo = 31;
+   //----------------------------------------------------------------------------------------------------
+    
     /**
      * Constructor for initializing the Panel.
      */
@@ -265,6 +324,17 @@ public class ConfigDialog extends JDialog implements ActionListener,
      * Initializes and constructs the GUI.
      */
     private void init() {
+    	
+    	//FIXME - add tool tip text for improved UI experience
+    	cLabel.setToolTipText(cLabelInfo);
+    	aLabel.setToolTipText(aLabelInfo);
+    	oLabel.setToolTipText(oLabelInfo);
+    	pCheckBoxLabel.setToolTipText(pCheckBoxInfo);
+    	partiteFieldLabel.setToolTipText(partiteFieldInfo);
+    	saveGraphOption.setToolTipText(saveGraphOptionInfo);
+    	sortGraphSelectionLabel.setToolTipText(sortGraphSelectionInfo);
+    	helpLabel.setToolTipText(helpInfo);
+    	
         setLayout(new GridBagLayout());
         Insets insets = new Insets(2, 2, 2, 2);
         
@@ -285,43 +355,63 @@ public class ConfigDialog extends JDialog implements ActionListener,
                         GridBagConstraints.BOTH, GridBagConstraints.CENTER, 
                         0, 0, insets));
         add(oLabel, getConstraints(0, 6, 1, 1, 1, 1, 
-                GridBagConstraints.NONE, GridBagConstraints.LINE_END, 
+                GridBagConstraints.NONE, GridBagConstraints.LINE_START, 
                 0, 0, insets));
-        add(orderingSelection, getConstraints(1, 6, 1, 1, 1, 1, 
+        add(orderingSelection, getConstraints(0, 7, 2, 1, 1, 1, 
                 GridBagConstraints.NONE, GridBagConstraints.CENTER, 
                 0, 0, insets));
-        add(aCheckBox, getConstraints(1, 7, 1, 1, 1, 1,
+        add(aCheckBox, getConstraints(0, 8, 2, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.CENTER,
                 0, 0, insets));
-        add(pCheckBox, getConstraints(2, 6, 2, 1, 1, 1, 
+        add(new JSeparator(JSeparator.VERTICAL),
+                getConstraints(2, 6, 1, 3, 1, 0,
+                        GridBagConstraints.BOTH, GridBagConstraints.LINE_START,
+                        0, 0, insets));
+        add(pCheckBoxLabel, getConstraints(3, 6, 1, 1, 1, 1, 
+                GridBagConstraints.BOTH, GridBagConstraints.LINE_START, 
+                0, 0, insets));
+        add(pCheckBox, getConstraints(3, 7, 1, 1, 1, 1, 
                 GridBagConstraints.BOTH, GridBagConstraints.CENTER, 
                 0, 0, insets));
         add(new JSeparator(JSeparator.HORIZONTAL), 
-                getConstraints(0, 8, 4, 1, 1, 0, 
+                getConstraints(0, 9, 4, 1, 1, 0, 
                         GridBagConstraints.BOTH, GridBagConstraints.CENTER, 
                         0, 0, insets));
-        add(sortGraphSelection, getConstraints(0, 9, 1, 1, 1, 1,
+        add (saveGraphOption,  getConstraints(0, 10, 1, 1, 1, 1, 
+                GridBagConstraints.NONE, GridBagConstraints.LINE_START, 
+                0, 0, insets));
+        add(iCheckBox, getConstraints(0, 11, 4, 1, 1, 1,
+                GridBagConstraints.BOTH, GridBagConstraints.CENTER,
+                0, 0, insets));
+        add(nCheckBox, getConstraints(0, 12, 4, 1, 1, 1,
+                GridBagConstraints.BOTH, GridBagConstraints.CENTER,
+                0, 0, insets));
+        add(sortGraphSelectionLabel, getConstraints(0, 13, 1, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.CENTER,
                 0, 0, insets));
-        add(iCheckBox, getConstraints(0, 10, 4, 1, 1, 1,
-                GridBagConstraints.BOTH, GridBagConstraints.CENTER,
+        add(sortGraphSelection, getConstraints(1, 13, 1, 1, 1, 1,
+                GridBagConstraints.NONE, GridBagConstraints.LINE_END,
                 0, 0, insets));
-        add(nCheckBox, getConstraints(0, 11, 4, 1, 1, 1,
-                GridBagConstraints.BOTH, GridBagConstraints.CENTER,
-                0, 0, insets));
-        add(sCheckBox, getConstraints(0, 12, 4, 1, 1, 1,
-                GridBagConstraints.BOTH, GridBagConstraints.CENTER,
-                0, 0, insets));
-        add(new JLabel("k-partite number (optional, minimum 3)"), getConstraints(0, 13, 2, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.CENTER,0, 0, insets));
-        add(partiteField, getConstraints(2, 13, 2, 1, 1, 1,
+        add(sCheckBox, getConstraints(0, 14, 4, 1, 1, 1,
                 GridBagConstraints.BOTH, GridBagConstraints.CENTER,
                 0, 0, insets));
         add(new JSeparator(JSeparator.HORIZONTAL),
-                getConstraints(0, 14, 4, 1, 1, 0,
+                getConstraints(0, 15, 4, 1, 1, 0,
                         GridBagConstraints.BOTH, GridBagConstraints.CENTER,
                         0, 0, insets));
-        add(doneButton, getConstraints(2, 15, 2, 1, 1, 1,
+        add(partiteFieldLabel, getConstraints(0, 16, 2, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.CENTER,0, 0, insets));
+        add(partiteField, getConstraints(1, 17, 2, 1, 1, 1,
+                GridBagConstraints.BOTH, GridBagConstraints.LINE_START,
+                0, 0, insets));
+        add(new JSeparator(JSeparator.HORIZONTAL),
+                getConstraints(0, 18, 4, 1, 1, 0,
+                        GridBagConstraints.BOTH, GridBagConstraints.CENTER,
+                        0, 0, insets));
+        add(doneButton, getConstraints(2, 19, 2, 1, 1, 1,
                 GridBagConstraints.NONE, GridBagConstraints.LINE_END,
+                0, 0, insets));
+        add(helpLabel, getConstraints(0, 19, 1, 1, 1, 1,
+                GridBagConstraints.NONE, GridBagConstraints.LINE_START,
                 0, 0, insets));
         //testing();
         pack();
@@ -463,33 +553,46 @@ public class ConfigDialog extends JDialog implements ActionListener,
              * rapin001 @ 2/20
              * Added a warning in case clique and no edge preservation is used with an undirected graph created using the addative method while the issue is addressed 
              */
-         /*   else if (conditionsList.getSelectedValue().toString().substring(startCharCond).equals(cliqueCon)  && !pCheckBox.isSelected() && !tried)
+
+   /*         else if (conditionsList.getSelectedValue().toString().substring(startCharCond).equals(cliqueCon)  && !pCheckBox.isSelected() && !tried)
             {
             	tried = true;
             	JOptionPane.showMessageDialog(this, "Currently the option:\n\n\t Clique + Breath First or Depth First Traversal Searches + No Edge preservation\n"
             			+ "When the graphed worked on is made undirecte using the: Additive method\n\n is not supported!\n\n"
             			+ "Please change your search criteria or press \"Done\" again to run", "Warrning", JOptionPane.ERROR_MESSAGE);
      
-            }*/
+
+            }
+            
+      */      
+
+// -------------------------------------------------------------------------            
+            
             /*
              * rapin001 @ 2/20
              * Added a error message when user tries to select: Currently the option: Bipartite + Breath First Traversal Search + No Edge Presertvation while the issue is resolved
              */
-        /*	else if (conditionsList.getSelectedValue().toString().substring(startCharCond).equals(biPartiteCon) && algorithmsList.getSelectedValuesList().toString().substring(startCharAlgo).equals(BFTSSting) && !pCheckBox.isSelected())
+
+     /*    
+            else if (conditionsList.getSelectedValue().toString().substring(startCharCond).equals(biPartiteCon) && algorithmsList.getSelectedValuesList().toString().substring(startCharAlgo).equals(BFTSSting) && !pCheckBox.isSelected())
+
         	{
         		 JOptionPane.showMessageDialog(this, "Currently the option:\n\n\t Bipartite + Breath First Traversal Search + No Edge Presertvation \n\n is not supported!", errorTitle, JOptionPane.ERROR_MESSAGE);
-        	}*/
-            
+        	}
+     */        
+
             /*
              * rapin001@ 2/20
              * Added a error message when user selects save to file while issue with feature is being worked on 
              */
-        /*	else if (sCheckBox.isSelected())
+    /*    	
+     		else if (sCheckBox.isSelected())
         	{
         		 JOptionPane.showMessageDialog(this, "Currently the option:\n\n\t Save found subgraph to file  \n\n is not supported!", errorTitle, JOptionPane.ERROR_MESSAGE);
         	}
-        	*/
-            
+
+      */ 	
+
             else {
                 ActionEvent newEvent = null;
                 try {

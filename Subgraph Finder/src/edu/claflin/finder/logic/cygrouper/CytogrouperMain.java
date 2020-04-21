@@ -41,12 +41,10 @@ public class CytogrouperMain {
             CygrouperAssembler assmble = new CygrouperAssembler(subgraphs.get(i).getEdgeList());
             tree = assmble.getTree();
             BFS(tree);
-            
-            //Currently disabled
-            /*
+                       
             if(partiteNumber > 2) {
             	kPartite(tree, partiteNumber); 
-            } */           
+            }        
             
             results.add(tree);
         }
@@ -91,8 +89,7 @@ public class CytogrouperMain {
      * @param k the number of partitions to create
      * 
      * Written by kpuli007
-     */
-    /*
+     */    
     public void kPartite(Map tree, int k) {    	
     	//1-partite graph isn't a thing, and 2-partite is just binary partite which is the input to this method.
     	//So we disallow using them as parameters
@@ -186,6 +183,5 @@ public class CytogrouperMain {
             CygrouperNode current = lesserGroup.remove();
             current.setPartiteNumber(2);
         }
-    }
-    */
+    }   
 }
